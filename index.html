@@ -9,6 +9,12 @@
             text-align: center;
             font-family: Arial, sans-serif;
         }
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            /* Added padding for better spacing */
+            padding: 10px;
+        }
         .image-container {
             position: relative;
             display: inline-block;
@@ -23,6 +29,8 @@
             font-size: 14px;
             font-weight: bold;
             color: black;
+            background-color: white; /* Added to make text more visible */
+            padding: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -40,6 +48,7 @@
     </div>
 
     <script>
+        // Define quotes
         const quotes = [
             "The mind is like an iceberg, it floats with one-seventh of its bulk above water.",
             "Dreams are the royal road to the unconscious.",
@@ -47,18 +56,20 @@
             "Unexpressed emotions will never die. They are buried alive and will come forth later in uglier ways."
         ];
 
-        // Add logic to display quotes
+        // Function to display random quote
         function displayRandomQuote() {
             const speechBubble = document.getElementById('speech');
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            speechBubble.textContent = quotes[randomIndex];
+            if (speechBubble) { // Add check to ensure element exists
+                const randomIndex = Math.floor(Math.random() * quotes.length);
+                speechBubble.textContent = quotes[randomIndex];
+            }
         }
 
-        // Display initial quote
-        displayRandomQuote();
-
-        // Optional: Change quote periodically
-        setInterval(displayRandomQuote, 1000); // Changes quote every 1 second
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            displayRandomQuote(); // Display initial quote
+            setInterval(displayRandomQuote, 5000); // Change quote every 5 seconds
+        });
     </script>
 </body>
 </html>
