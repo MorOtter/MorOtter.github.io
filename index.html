@@ -1,7 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freud Random Quote</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .speech-bubble {
+            position: absolute;
+            top: 20%;
+            left: 60%;
+            width: 150px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: black;
+        }
+        .image-container {
+            position: relative;
+            display: inline-block;
+        }
+    </style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    <h1>Freud's Random Wisdom</h1>
+    <div class="image-container">
+        <img src="Freud.png" alt="Freud with Speech Bubble" style="width:500px;">
+        <div class="speech-bubble" id="speech"></div>
+    </div>
+
+    <script>
+        const quotes = [
+            "The mind is like an iceberg, it floats with one-seventh of its bulk above water.",
+            "Dreams are the royal road to the unconscious.",
+            "Out of your vulnerabilities will come your strength.",
+            "Unexpressed emotions will never die. They are buried alive and will come forth later in uglier ways.",
+            // Add more quotes here, up to 100
+        ];
+
+        function loadRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            document.getElementById('speech').innerText = quotes[randomIndex];
+        }
+
+        loadRandomQuote();
+    </script>
 </body>
 </html>
