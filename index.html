@@ -29,12 +29,27 @@
             font-weight: bold;
             color: black;
             background-color: white;
-            padding: 10px;
+            padding: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             line-height: 1.2;
             overflow-wrap: break-word;
+            border-radius: 20px;
+            position: relative;
+        }
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border: 20px solid transparent;
+            border-top-color: white;
+            border-bottom: 0;
+            margin-left: -20px;
+            margin-bottom: -20px;
         }
     </style>
 </head>
@@ -55,17 +70,17 @@
             "Unexpressed emotions will never die. They are buried alive and will come forth later in uglier ways."
         ];
 
-        // Function to display random quote
+        // Function to display random quote (only once)
         function displayRandomQuote() {
             const speechBubble = document.getElementById('speech');
-            if (speechBubble) {
+            if (speechBubble && !speechBubble.textContent) {  // Only set if empty
                 const randomIndex = Math.floor(Math.random() * quotes.length);
                 speechBubble.textContent = quotes[randomIndex];
             }
         }
 
-        // Display quote only when page loads
-        document.addEventListener('DOMContentLoaded', displayRandomQuote);
+        // Run once when page loads
+        window.onload = displayRandomQuote;
     </script>
 </body>
 </html>
