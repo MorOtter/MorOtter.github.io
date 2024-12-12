@@ -31,8 +31,8 @@
             position: absolute;
             bottom: 50px;  /* Position from bottom */
             right: 50px;   /* Position from right */
-            width: 160px;
-            height: 90px;
+            width: 240px;  /* Increased width */
+            height: 130px; /* Increased height */
             text-align: center;
             font-size: 14px;
             font-weight: bold;
@@ -50,15 +50,15 @@
         .speech-bubble:after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 50%;
+            top: 10px; /* Positioned at the top */
+            left: 10px; /* Positioned at the left */
             width: 0;
             height: 0;
-            border: 20px solid transparent;
-            border-top-color: white;
+            border: 10px solid transparent; /* Reduced size for the spike */
+            border-right-color: white; /* Color of the spike */
+            border-left: 0;
             border-bottom: 0;
-            margin-left: -20px;
-            margin-bottom: -20px;
+            margin-left: -10px; /* Adjusted margin for positioning */
         }
     </style>
 </head>
