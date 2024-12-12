@@ -15,10 +15,10 @@
         }
         .speech-bubble {
             position: absolute;
-            top: 20%; /* Adjust this to position vertically */
-            left: 1%; /* Adjust this to position horizontally */
-            width: 160px; /* Set the width of the text inside */
-            height: 90px; /* Match the approximate speech bubble height */
+            top: 20%;
+            left: 1%;
+            width: 160px;
+            height: 90px;
             text-align: center;
             font-size: 14px;
             font-weight: bold;
@@ -26,8 +26,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            line-height: 1.2; /* Add better spacing for multiple lines */
-            overflow-wrap: break-word; /* Ensure long quotes wrap within the bubble */
+            line-height: 1.2;
+            overflow-wrap: break-word;
         }
     </style>
 </head>
@@ -44,6 +44,21 @@
             "The mind is like an iceberg, it floats with one-seventh of its bulk above water.",
             "Dreams are the royal road to the unconscious.",
             "Out of your vulnerabilities will come your strength.",
-            "Unexpressed emotions will never die. They are buried alive and will come forth later in uglier ways.",
-            // Add more quotes here, up to 100
- 
+            "Unexpressed emotions will never die. They are buried alive and will come forth later in uglier ways."
+        ];
+
+        // Add logic to display quotes
+        function displayRandomQuote() {
+            const speechBubble = document.getElementById('speech');
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            speechBubble.textContent = quotes[randomIndex];
+        }
+
+        // Display initial quote
+        displayRandomQuote();
+
+        // Optional: Change quote periodically
+        setInterval(displayRandomQuote, 1000); // Changes quote every 1 second
+    </script>
+</body>
+</html>
