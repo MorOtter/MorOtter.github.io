@@ -29,8 +29,8 @@
         }
         .speech-bubble {
             position: absolute;
-            top: 50px;  /* Adjust this value to move the bubble up/down */
-            left: 50px;  /* Adjust this value to move the bubble left/right */
+            bottom: 50px;  /* Position from bottom */
+            right: 50px;   /* Position from right */
             width: 160px;
             height: 90px;
             text-align: center;
@@ -45,7 +45,7 @@
             line-height: 1.2;
             overflow-wrap: break-word;
             border-radius: 20px;
-            z-index: 2;  /* Make sure bubble appears over the image */
+            z-index: 2;
         }
         .speech-bubble:after {
             content: '';
@@ -71,24 +71,32 @@
     </div>
 
     <script>
-        // Define quotes
         const quotes = [
-            "The mind is like an iceberg, it floats with one-seventh of its bulk above water.",
-            "Dreams are the royal road to the unconscious.",
-            "Out of your vulnerabilities will come your strength.",
-            "Unexpressed emotions will never die. They are buried alive and will come forth later in uglier ways."
+            "Ah, ze Christmas jumper - a textile manifestation of one's unresolved childhood conflicts, where ze knitted reindeer represents both a primal father figure and a sublimated desire for maternal warmth!",
+            "Notice how ze male wearing a sequined Santa motif is clearly compensating - his jumper is but a woolly projection of unacknowledged libidinal energies seeking external validation!",
+            "Zis garish knitwear is nothing more than a desperate attempt to transform ze repressed unconscious into a public spectacle of seasonal performativity!",
+            "Ze Christmas jumper is clearly a symbolic displacement of sexual frustration, transforming unspoken erotic tensions into a landscape of anthropomorphic snowmen and dancing penguins!",
+            "In ze intricate cable-knit patterns, one can discern ze deep-seated neuroses of ze wearer - each festive motif a complex negotiation between societal expectations and primitive id-driven impulses!",
+            "Zis reindeer motif is clearly a manifestation of ze Oedipus complex - ze wearer unconsciously wishes to replace Santa as ze dominant patriarchal figure, yet simultaneously seeks maternal comfort through ze soft, nurturing wool!",
+            "Ze clash between ze rational ego and ze primitive id is nowhere more apparent than in zis jumper - where ze carefully structured Nordic pattern struggles against ze chaotic, impulse-driven snowman graphic!",
+            "Observe how ze Christmas jumper becomes a textile representation of ze superego's repressive mechanisms - ze wearer attempts to sublimate their deepest sexual tensions into a socially acceptable form of festive performativity!",
+            "Ze knitted pattern is but a thin membrane between conscious restraint and ze roiling, uncontrollable libidinal energies of ze unconscious - each sequin a potential site of neurotic displacement!",
+            "In zis garment, we see ze ultimate negotiation between ze pleasure principle and ze reality principle - ze wearer simultaneously seeks infantile comfort and adult social acceptance through zis ridiculous wool-based expression of psychological tension!",
+            "Your jumper reveals a profound psychological landscape - ze placement of zis dancing elf suggests a clear compensation mechanism for unresolved childhood inadequacies!",
+            "Ze selection of color palette is not merely an aesthetic choice, but a complex negotiation between ze wearer's conscious performativity and zeir deeply repressed chromatic unconscious desires!",
+            "I declare zis jumper - with its asymmetrical snowflake pattern - a masterful textile representation of ze eternal conflict between ze ego's structured mediations and ze id's chaotic impulses!",
+            "Achtung! Ze sequin placement on zis garment is nothing short of a profound neurological mapping - each glittering point a potential site of unresolved psychological trauma transformed into festive expression!",
+            "By ze principles of psychoanalysis, I pronounce zis jumper not merely a garment, but a complex phenomenological text - where ze knitted reindeer becomes a symbolic negotiation between societal expectations and primitive libidinal energies!"
         ];
 
-        // Function to display random quote (only once)
         function displayRandomQuote() {
             const speechBubble = document.getElementById('speech');
-            if (speechBubble && !speechBubble.textContent) {  // Only set if empty
+            if (speechBubble && !speechBubble.textContent) {
                 const randomIndex = Math.floor(Math.random() * quotes.length);
                 speechBubble.textContent = quotes[randomIndex];
             }
         }
 
-        // Run once when page loads
         window.onload = displayRandomQuote;
     </script>
 </body>
