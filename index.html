@@ -48,15 +48,16 @@
             border-radius: 20px;
             z-index: 2;
         }
-        .speech-bubble:after {
+        .speech-bubble:before {
             content: '';
             position: absolute;
-            top: -15px;
+            top: -40px; /* Increased distance from bubble */
             left: 25%;
-            width: 30px;
-            height: 30px;
+            width: 40px; /* Wider spike */
+            height: 45px; /* Taller spike */
             background-color: white;
-            clip-path: polygon(0 100%, 50% 0, 100% 100%);
+            clip-path: polygon(0 100%, 50% 0, 100% 100%, 50% 85%); /* Modified shape for cartoon look */
+            transform: translateX(-50%);
         }
     </style>
 </head>
