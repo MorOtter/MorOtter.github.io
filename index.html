@@ -12,7 +12,6 @@
         h1 {
             text-align: center;
             margin: 20px 0;
-            /* Added padding for better spacing */
             padding: 10px;
         }
         .image-container {
@@ -29,7 +28,7 @@
             font-size: 14px;
             font-weight: bold;
             color: black;
-            background-color: white; /* Added to make text more visible */
+            background-color: white;
             padding: 10px;
             display: flex;
             align-items: center;
@@ -59,17 +58,14 @@
         // Function to display random quote
         function displayRandomQuote() {
             const speechBubble = document.getElementById('speech');
-            if (speechBubble) { // Add check to ensure element exists
+            if (speechBubble) {
                 const randomIndex = Math.floor(Math.random() * quotes.length);
                 speechBubble.textContent = quotes[randomIndex];
             }
         }
 
-        // Wait for DOM to be fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            displayRandomQuote(); // Display initial quote
-            setInterval(displayRandomQuote, 5000); // Change quote every 5 seconds
-        });
+        // Display quote only when page loads
+        document.addEventListener('DOMContentLoaded', displayRandomQuote);
     </script>
 </body>
 </html>
