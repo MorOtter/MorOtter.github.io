@@ -1,29 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freud Random Quote</title>
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-        .speech-bubble {
-            position: absolute;
-            top: 20%;
-            left: 60%;
-            width: 150px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: bold;
-            color: black;
-        }
-        .image-container {
-            position: relative;
-            display: inline-block;
-        }
-    </style>
+<style>
+    body {
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
+    .image-container {
+        position: relative;
+        display: inline-block;
+    }
+    .speech-bubble {
+        position: absolute;
+        top: 20%; /* Adjust this to position vertically */
+        left: 12%; /* Adjust this to position horizontally */
+        width: 160px; /* Set the width of the text inside */
+        height: 90px; /* Match the approximate speech bubble height */
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1.2; /* Add better spacing for multiple lines */
+        overflow-wrap: break-word; /* Ensure long quotes wrap within the bubble */
+    }
+</style>
+
+<div class="image-container">
+    <img src="Freud.png" alt="Freud with Speech Bubble" style="width:500px;">
+    <div class="speech-bubble" id="speech"></div>
+</div>
+
 </head>
 <body>
     <h1>Freud's Random Wisdom</h1>
