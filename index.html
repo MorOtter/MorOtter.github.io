@@ -1,34 +1,41 @@
-<style>
-    body {
-        text-align: center;
-        font-family: Arial, sans-serif;
-    }
-    .image-container {
-        position: relative;
-        display: inline-block;
-    }
-    .speech-bubble {
-        position: absolute;
-        top: 0%; /* Adjust this to position vertically */
-        left: 1%; /* Adjust this to position horizontally */
-        width: 160px; /* Set the width of the text inside */
-        height: 90px; /* Match the approximate speech bubble height */
-        text-align: center;
-        font-size: 14px;
-        font-weight: bold;
-        color: black;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        line-height: 1.2; /* Add better spacing for multiple lines */
-        overflow-wrap: break-word; /* Ensure long quotes wrap within the bubble */
-    }
-</style>
-
-<div class="image-container">
-    <img src="Freud.png" alt="Freud with Speech Bubble" style="width:500px;">
-    <div class="speech-bubble" id="speech"></div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freud's Jumper Review</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .image-container {
+            position: relative;
+            display: inline-block;
+        }
+        .speech-bubble {
+            position: absolute;
+            top: 1%; /* Adjust this to position vertically */
+            left: 1%; /* Adjust this to position horizontally */
+            width: 160px; /* Set the width of the text inside */
+            height: 90px; /* Match the approximate speech bubble height */
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.2; /* Add better spacing for multiple lines */
+            overflow-wrap: break-word; /* Ensure long quotes wrap within the bubble */
+        }
+    </style>
+</head>
+<body>
+    <div class="image-container">
+        <img src="Freud.png" alt="Freud with Speech Bubble" style="width:500px;">
+        <div class="speech-bubble" id="speech"></div>
+    </div>
 
     <script>
         const quotes = [
@@ -37,14 +44,4 @@
             "Out of your vulnerabilities will come your strength.",
             "Unexpressed emotions will never die. They are buried alive and will come forth later in uglier ways.",
             // Add more quotes here, up to 100
-        ];
-
-        function loadRandomQuote() {
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            document.getElementById('speech').innerText = quotes[randomIndex];
-        }
-
-        loadRandomQuote();
-    </script>
-</body>
-</html>
+ 
