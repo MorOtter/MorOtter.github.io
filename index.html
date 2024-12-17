@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gamification Learning Adventure</title>
+    <title>Gamification Learning Challenge</title>
     <!-- External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
@@ -23,7 +23,14 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
         }
-        .correct { background-color: #d4edda !important; color: #155724; }
+        .correct {
+            background-color: #d4edda !important;
+            color: #155724 !important;
+        }
+        .incorrect {
+            background-color: #f8d7da !important;
+            color: #721c24 !important;
+        }
     </style>
 </head>
 <body>
@@ -32,94 +39,172 @@
     <script type="text/babel">
         const { useState } = React;
 
-        const GamificationLearningChallenge = () => {
-            const [score, setScore] = useState(0);
-            const [completed, setCompleted] = useState({
-                fillInBlank: false,
+        const GamificationChallenge = () => {
+            const correctAnswers = {
+                blank1: "Learning",
+                blank2: "Game",
+                blank3: "Points",
+                blank4: "Leaderboards",
+                blank5: "Challenges",
+                blank6: "Education",
+                blank7: "Motivation",
+                blank8: "Participation",
+            };
+
+            const dropdownOptions = {
+                blank1: shuffle(["Learning", "Underwater basket weaving", "Gaming", "Adventures"]),
+                blank2: shuffle(["Game", "Spoon juggling", "Entertainment", "Board"]),
+                blank3: shuffle(["Points", "Glitter explosions", "Rewards", "Tokens"]),
+                blank4: shuffle(["Leaderboards", "Penguin wrestling", "Rewards", "Levels"]),
+                blank5: shuffle(["Challenges", "Yodeling contests", "Goals", "Fun"]),
+                blank6: shuffle(["Education", "Unicorn riding", "Sports", "Adventures"]),
+                blank7: shuffle(["Motivation", "Donut consumption", "Advancement", "Teaching"]),
+                blank8: shuffle(["Participation", "Pillow fighting", "Rewards", "Engagement"]),
+            };
+
+            const [answers, setAnswers] = useState({
+                blank1: "",
+                blank2: "",
+                blank3: "",
+                blank4: "",
+                blank5: "",
+                blank6: "",
+                blank7: "",
+                blank8: "",
             });
 
-            const FillInTheBlanksChallenge = () => {
-                const correctAnswers = {
-                    blank1: "points",
-                    blank2: "motivation",
-                };
+            const [feedback, setFeedback] = useState({});
 
-                const [answers, setAnswers] = useState({
-                    blank1: "",
-                    blank2: "",
-                });
+            function shuffle(array) {
+                return array.sort(() => Math.random() - 0.5);
+            }
 
-                const handleChange = (e) => {
-                    const { name, value } = e.target;
-                    setAnswers((prev) => ({ ...prev, [name]: value }));
-                };
+            const handleChange = (e) => {
+                const { name, value } = e.target;
+                setAnswers((prev) => ({ ...prev, [name]: value }));
+            };
 
-                const checkAnswers = () => {
-                    if (
-                        answers.blank1 === correctAnswers.blank1 &&
-                        answers.blank2 === correctAnswers.blank2
-                    ) {
-                        setScore((prev) => prev + 100);
-                        setCompleted((prev) => ({ ...prev, fillInBlank: true }));
-                        Swal.fire('Correct!', 'You completed the sentence correctly!', 'success');
-                    } else {
-                        Swal.fire('Try Again', 'Some answers are incorrect.', 'error');
-                    }
-                };
-
-                return (
-                    <div className="p-6 bg-purple-50 rounded-lg shadow-lg">
-                        <h3 className="text-2xl font-bold mb-4 text-purple-700">✍️ Fill in the Blank Challenge</h3>
-                        <p className="mb-4">
-                            Gamification uses <select
-                                name="blank1"
-                                value={answers.blank1}
-                                onChange={handleChange}
-                                className="border rounded px-2 py-1 mx-1"
-                            >
-                                <option value="">--Select--</option>
-                                <option value="badges">badges</option>
-                                <option value="points">points</option>
-                                <option value="timers">timers</option>
-                            </select>
-                            to track progress and <select
-                                name="blank2"
-                                value={answers.blank2}
-                                onChange={handleChange}
-                                className="border rounded px-2 py-1 mx-1"
-                            >
-                                <option value="">--Select--</option>
-                                <option value="motivation">motivation</option>
-                                <option value="stress">stress</option>
-                                <option value="competition">competition</option>
-                            </select>
-                            to encourage learners.
-                        </p>
-                        <button
-                            onClick={checkAnswers}
-                            className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-700"
-                        >
-                            Submit
-                        </button>
-                        {completed.fillInBlank && (
-                            <p className="text-green-600 font-bold mt-4">✅ Sentence Complete!</p>
-                        )}
-                    </div>
-                );
+            const checkAnswers = () => {
+                const feedbackObj = {};
+                for (let key in answers) {
+                    feedbackObj[key] = answers[key] === correctAnswers[key] ? "correct" : "incorrect";
+                }
+                setFeedback(feedbackObj);
             };
 
             return (
                 <div className="game-container p-8 max-w-4xl mx-auto text-center">
-                    <h1 className="text-4xl font-bold text-gray-800 mb-6">🎮 Gamification Learning Adventure</h1>
-                    <p className="text-gray-600 mb-4">Your Score: {score}</p>
-                    <div className="mb-8">
-                        <FillInTheBlanksChallenge />
-                    </div>
+                    <h1 className="text-4xl font-bold text-gray-800 mb-6">🎮 Gamification Learning Challenge</h1>
+                    <p className="text-gray-600 mb-4 text-lg">
+                        “Gamification in 
+                        <select
+                            name="blank1"
+                            value={answers.blank1}
+                            onChange={handleChange}
+                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank1}`}
+                        >
+                            <option value="">--Select--</option>
+                            {dropdownOptions.blank1.map((option, index) => (
+                                <option key={index} value={option}>{option}</option>
+                            ))}
+                        </select>
+                        is the integration of 
+                        <select
+                            name="blank2"
+                            value={answers.blank2}
+                            onChange={handleChange}
+                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank2}`}
+                        >
+                            <option value="">--Select--</option>
+                            {dropdownOptions.blank2.map((option, index) => (
+                                <option key={index} value={option}>{option}</option>
+                            ))}
+                        </select>
+                        mechanics, such as 
+                        <select
+                            name="blank3"
+                            value={answers.blank3}
+                            onChange={handleChange}
+                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank3}`}
+                        >
+                            <option value="">--Select--</option>
+                            {dropdownOptions.blank3.map((option, index) => (
+                                <option key={index} value={option}>{option}</option>
+                            ))}
+                        </select>
+                        , badges, 
+                        <select
+                            name="blank4"
+                            value={answers.blank4}
+                            onChange={handleChange}
+                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank4}`}
+                        >
+                            <option value="">--Select--</option>
+                            {dropdownOptions.blank4.map((option, index) => (
+                                <option key={index} value={option}>{option}</option>
+                            ))}
+                        </select>
+                        , and 
+                        <select
+                            name="blank5"
+                            value={answers.blank5}
+                            onChange={handleChange}
+                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank5}`}
+                        >
+                            <option value="">--Select--</option>
+                            {dropdownOptions.blank5.map((option, index) => (
+                                <option key={index} value={option}>{option}</option>
+                            ))}
+                        </select>
+                        like 
+                        <select
+                            name="blank6"
+                            value={answers.blank6}
+                            onChange={handleChange}
+                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank6}`}
+                        >
+                            <option value="">--Select--</option>
+                            {dropdownOptions.blank6.map((option, index) => (
+                                <option key={index} value={option}>{option}</option>
+                            ))}
+                        </select>
+                        to engage learners and enhance their 
+                        <select
+                            name="blank7"
+                            value={answers.blank7}
+                            onChange={handleChange}
+                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank7}`}
+                        >
+                            <option value="">--Select--</option>
+                            {dropdownOptions.blank7.map((option, index) => (
+                                <option key={index} value={option}>{option}</option>
+                            ))}
+                        </select>
+                        and 
+                        <select
+                            name="blank8"
+                            value={answers.blank8}
+                            onChange={handleChange}
+                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank8}`}
+                        >
+                            <option value="">--Select--</option>
+                            {dropdownOptions.blank8.map((option, index) => (
+                                <option key={index} value={option}>{option}</option>
+                            ))}
+                        </select>
+                        .”
+                    </p>
+                    <button
+                        onClick={checkAnswers}
+                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+                    >
+                        Check Answers
+                    </button>
                 </div>
             );
         };
 
-        ReactDOM.render(<GamificationLearningChallenge />, document.getElementById('root'));
+        ReactDOM.render(<GamificationChallenge />, document.getElementById("root"));
     </script>
 </body>
 </html>
