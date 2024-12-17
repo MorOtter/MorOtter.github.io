@@ -4,275 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gamification Learning Adventure</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-            font-family: 'Comfortaa', cursive;
-            touch-action: manipulation;
-        }
-        .game-container {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-        }
-        .item-selected {
-            transform: scale(1.1);
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            border: 2px solid #4CAF50;
+            min-height: 100vh;
         }
     </style>
 </head>
 <body>
-    <div id="root" class="min-h-screen flex items-center justify-center p-4"></div>
+    <div id="root"></div>
 
     <script type="text/babel">
-        const { useState } = React;
-
-        const GamificationLearningChallenge = () => {
-            const [score, setScore] = useState(0);
-            const [completed, setCompleted] = useState({
-                origin: false,
-                definition: false,
-                application: false,
-                benefit: false
-            });
-
-            const TimelineChallenge = () => {
-                const [milestones, setMilestones] = useState([
-                    { id: 'video_games', text: '🎮 Video game concept of points/levels' },
-                    { id: 'term_coined', text: '💡 Term "Gamification" coined by Nick Pelling' },
-                    { id: 'education', text: '📚 First educational gamification studies' },
-                    { id: 'widespread', text: '🌐 Widespread adoption in corporate training' }
-                ]);
-
-                const [selectedMilestone, setSelectedMilestone] = useState(null);
-                const [orderAttempts, setOrderAttempts] = useState(0);
-
-                const handleMilestoneSelect = (milestone) => {
-                    if (selectedMilestone === milestone) {
-                        setSelectedMilestone(null);
-                        return;
-                    }
-
-                    if (selectedMilestone) {
-                        // Swap milestones
-                        const newMilestones = milestones.map(m => 
-                            m.id === selectedMilestone.id ? milestone : 
-                            m.id === milestone.id ? selectedMilestone : m
-                        );
-                        
-                        setMilestones(newMilestones);
-                        setSelectedMilestone(null);
-                        setOrderAttempts(attempts => attempts + 1);
-                    } else {
-                        setSelectedMilestone(milestone);
-                    }
-                };
-
-                const checkOrder = () => {
-                    const correctOrder = [
-                        'video_games', 
-                        'term_coined', 
-                        'education', 
-                        'widespread'
-                    ];
-                    const isCorrect = milestones.map(m => m.id).every((id, index) => id === correctOrder[index]);
-                    
-                    if (isCorrect) {
-                        setScore(prevScore => prevScore + 100);
-                        setCompleted(prev => ({ ...prev, origin: true }));
-                        Swal.fire({
-                            title: 'Historical Timeline Mastered!',
-                            text: `You solved it in ${orderAttempts} attempts!`,
-                            icon: 'success',
-                            confirmButtonText: 'Awesome!'
-                        });
-                    } else if (orderAttempts > 3) {
-                        Swal.fire({
-                            title: 'Keep Trying!',
-                            text: 'Hint: Think about the chronological order of gamification\'s development',
-                            icon: 'info',
-                            confirmButtonText: 'Got it!'
-                        });
-                    }
-                };
-
-                return (
-                    <div className="p-6 bg-blue-50 rounded-lg shadow-lg">
-                        <h3 className="text-2xl font-bold mb-4 text-blue-700">🕰️ Time Travel Challenge</h3>
-                        <p className="mb-4 text-gray-600">Tap milestones to swap and order them chronologically!</p>
-                        <div className="space-y-4">
-                            {milestones.map((milestone) => (
-                                <button 
-                                    key={milestone.id} 
-                                    onClick={() => handleMilestoneSelect(milestone)}
-                                    className={`w-full text-left bg-white p-4 rounded-lg shadow transform transition-all 
-                                        ${selectedMilestone?.id === milestone.id ? 'item-selected' : 'hover:scale-105'}`}
-                                >
-                                    {milestone.text}
-                                </button>
-                            ))}
-                        </div>
-                        <button 
-                            onClick={checkOrder}
-                            className="mt-6 w-full bg-gradient-to-r from-green-400 to-blue-500 text-white p-3 rounded-lg hover:from-green-500 hover:to-blue-600 transition-all"
-                        >
-                            Verify Timeline
-                        </button>
-                    </div>
-                );
-            };
-
-            const ElementsDecoder = () => {
-                const matchings = [
-                    { gameElement: '🏆 Points', learningTransformation: 'Motivation tracking' },
-                    { gameElement: '📈 Levels', learningTransformation: 'Progress visualization' },
-                    { gameElement: '🎖️ Badges', learningTransformation: 'Achievement recognition' },
-                    { gameElement: '🏅 Leaderboards', learningTransformation: 'Competitive learning' }
-                ];
-
-                const [selectedGameElement, setSelectedGameElement] = useState(null);
-                const [selectedTransformation, setSelectedTransformation] = useState(null);
-                const [matches, setMatches] = useState(
-                    matchings.map(m => ({ ...m, matched: false }))
-                );
-
-                const handleGameElementSelect = (element) => {
-                    if (selectedGameElement === element) {
-                        setSelectedGameElement(null);
-                        return;
-                    }
-                    setSelectedGameElement(element);
-                };
-
-                const handleTransformationSelect = (transformation) => {
-                    if (!selectedGameElement) {
-                        Swal.fire({
-                            title: 'Oops!',
-                            text: 'Select a game element first',
-                            icon: 'warning',
-                            confirmButtonText: 'OK'
-                        });
-                        return;
-                    }
-
-                    const matchedPair = matchings.find(
-                        m => m.gameElement === selectedGameElement.gameElement && 
-                             m.learningTransformation === transformation.learningTransformation
-                    );
-
-                    if (matchedPair) {
-                        const newMatches = matches.map(m => 
-                            m.learningTransformation === transformation.learningTransformation 
-                                ? { ...m, matched: true } 
-                                : m
-                        );
-
-                        setMatches(newMatches);
-
-                        const allMatched = newMatches.every(m => m.matched);
-                        if (allMatched) {
-                            setScore(prevScore => prevScore + 150);
-                            setCompleted(prev => ({ ...prev, definition: true }));
-                            Swal.fire({
-                                title: 'Gamification Decoded!',
-                                text: 'You\'ve successfully matched all elements!',
-                                icon: 'success',
-                                confirmButtonText: 'Fantastic!'
-                            });
-                        }
-                    } else {
-                        Swal.fire({
-                            title: 'Not Quite Right',
-                            text: 'Try matching a different game element',
-                            icon: 'error',
-                            confirmButtonText: 'Got it'
-                        });
-                    }
-
-                    // Reset selections
-                    setSelectedGameElement(null);
-                    setSelectedTransformation(null);
-                };
-
-                return (
-                    <div className="p-6 bg-purple-50 rounded-lg shadow-lg">
-                        <h3 className="text-2xl font-bold mb-4 text-purple-700">🧩 Gamification Decoder</h3>
-                        <p className="mb-4 text-gray-600">Tap to match game elements to learning transformations!</p>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <h4 className="font-bold mb-2">Game Elements</h4>
-                                {matchings.map((match, index) => (
-                                    <button 
-                                        key={index} 
-                                        onClick={() => handleGameElementSelect(match)}
-                                        className={`w-full text-left bg-gradient-to-r from-purple-500 to-pink-500 
-                                            text-white p-4 rounded-lg mb-4 transform transition-all
-                                            ${selectedGameElement?.gameElement === match.gameElement ? 'item-selected' : 'hover:scale-105'}`}
-                                    >
-                                        {match.gameElement}
-                                    </button>
-                                ))}
-                            </div>
-                            <div>
-                                <h4 className="font-bold mb-2">Learning Transformations</h4>
-                                {matchings.map((match, index) => (
-                                    <button
-                                        key={index}
-                                        onClick={() => handleTransformationSelect(match)}
-                                        className={`w-full text-left bg-white p-4 rounded-lg mb-4 
-                                            ${match.matched ? 'bg-green-100' : 'hover:bg-gray-100'}`}
-                                    >
-                                        {match.learningTransformation}
-                                        {match.matched && <span className="ml-2">✅</span>}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                );
-            };
-
+        const App = () => {
             return (
-                <div className="game-container w-full max-w-6xl mx-auto p-8">
-                    <h1 className="text-4xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">
+                <div className="container mx-auto p-4">
+                    <h1 className="text-3xl font-bold text-center mb-6 text-white">
                         Gamification Learning Adventure
                     </h1>
-                    
-                    <div className="grid md:grid-cols-2 gap-8 mb-8">
-                        <TimelineChallenge />
-                        <ElementsDecoder />
-                    </div>
-
                     <div className="bg-white p-6 rounded-lg shadow-lg">
-                        <h3 className="text-2xl font-bold mb-4 text-center">🏆 Your Learning Quest</h3>
-                        <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
-                            <div 
-                                className="bg-gradient-to-r from-green-400 to-blue-500 h-4 rounded-full" 
-                                style={{width: `${Math.min(score, 100)}%`}}
-                            ></div>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <span className="text-lg font-semibold">Total Score: {score} points</span>
-                            <div className="flex space-x-2">
-                                {Object.entries(completed).map(([key, value]) => (
-                                    <span 
-                                        key={key} 
-                                        className={`p-2 rounded-full ${
-                                            value 
-                                            ? 'bg-green-500 text-white' 
-                                            : 'bg-gray-300'
-                                        }`}
-                                    >
-                                        {key}
-                                    </span>
-                                ))}
+                        <div className="grid md:grid-cols-2 gap-4">
+                            <div className="bg-blue-100 p-4 rounded">
+                                <h2 className="text-xl font-semibold mb-4">Timeline Challenge</h2>
+                                <ul>
+                                    <li>🎮 Video game points/levels</li>
+                                    <li>💡 Gamification term coined</li>
+                                    <li>📚 First educational studies</li>
+                                    <li>🌐 Corporate training adoption</li>
+                                </ul>
+                                <button className="mt-4 bg-blue-500 text-white p-2 rounded">
+                                    Start Challenge
+                                </button>
+                            </div>
+                            <div className="bg-purple-100 p-4 rounded">
+                                <h2 className="text-xl font-semibold mb-4">Gamification Decoder</h2>
+                                <ul>
+                                    <li>🏆 Points → Motivation tracking</li>
+                                    <li>📈 Levels → Progress visualization</li>
+                                    <li>🎖️ Badges → Achievement recognition</li>
+                                    <li>🏅 Leaderboards → Competitive learning</li>
+                                </ul>
+                                <button className="mt-4 bg-purple-500 text-white p-2 rounded">
+                                    Start Challenge
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -280,8 +57,7 @@
             );
         };
 
-        ReactDOM.render(<GamificationLearningChallenge />, document.getElementById('root'));
+        ReactDOM.render(<App />, document.getElementById('root'));
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
