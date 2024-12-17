@@ -62,15 +62,15 @@
 
                     Object.keys(correctAnswers).forEach(key => {
                         if (userAnswers[key] === correctAnswers[key]) {
-                            newFeedback[key] = "correct";
+                            newFeedback[key] = "correct";  // Correct answer
                         } else {
-                            newFeedback[key] = "incorrect";
+                            newFeedback[key] = "incorrect";  // Incorrect answer
                             allCorrect = false;
                         }
                     });
 
                     setFeedback(newFeedback);
-                    setIsAnswered(true); // Mark that the answers have been checked
+                    setIsAnswered(true);  // Mark answers as checked
 
                     if (allCorrect) {
                         setScore(prev => prev + 100);
@@ -92,7 +92,7 @@
                             Gamification in&nbsp;
                             <select
                                 onChange={(e) => handleChange(e, 1)}
-                                value={isAnswered ? correctAnswers[1] : userAnswers[1] || ""}
+                                value={userAnswers[1] || ""}
                                 className={feedback[1] || ""}
                                 disabled={isAnswered}
                             >
@@ -104,7 +104,7 @@
                             &nbsp;is the integration of&nbsp;
                             <select
                                 onChange={(e) => handleChange(e, 2)}
-                                value={isAnswered ? correctAnswers[2] : userAnswers[2] || ""}
+                                value={userAnswers[2] || ""}
                                 className={feedback[2] || ""}
                                 disabled={isAnswered}
                             >
@@ -116,7 +116,7 @@
                             mechanics, such as&nbsp;
                             <select
                                 onChange={(e) => handleChange(e, 3)}
-                                value={isAnswered ? correctAnswers[3] : userAnswers[3] || ""}
+                                value={userAnswers[3] || ""}
                                 className={feedback[3] || ""}
                                 disabled={isAnswered}
                             >
@@ -128,7 +128,7 @@
                             badges,&nbsp;
                             <select
                                 onChange={(e) => handleChange(e, 4)}
-                                value={isAnswered ? correctAnswers[4] : userAnswers[4] || ""}
+                                value={userAnswers[4] || ""}
                                 className={feedback[4] || ""}
                                 disabled={isAnswered}
                             >
@@ -140,7 +140,7 @@
                             and&nbsp;
                             <select
                                 onChange={(e) => handleChange(e, 5)}
-                                value={isAnswered ? correctAnswers[5] : userAnswers[5] || ""}
+                                value={userAnswers[5] || ""}
                                 className={feedback[5] || ""}
                                 disabled={isAnswered}
                             >
@@ -151,7 +151,7 @@
                             </select>, like&nbsp;
                             <select
                                 onChange={(e) => handleChange(e, 6)}
-                                value={isAnswered ? correctAnswers[6] : userAnswers[6] || ""}
+                                value={userAnswers[6] || ""}
                                 className={feedback[6] || ""}
                                 disabled={isAnswered}
                             >
@@ -163,7 +163,7 @@
                             &nbsp;to engage learners and enhance their&nbsp;
                             <select
                                 onChange={(e) => handleChange(e, 7)}
-                                value={isAnswered ? correctAnswers[7] : userAnswers[7] || ""}
+                                value={userAnswers[7] || ""}
                                 className={feedback[7] || ""}
                                 disabled={isAnswered}
                             >
@@ -175,7 +175,7 @@
                             and&nbsp;
                             <select
                                 onChange={(e) => handleChange(e, 8)}
-                                value={isAnswered ? correctAnswers[8] : userAnswers[8] || ""}
+                                value={userAnswers[8] || ""}
                                 className={feedback[8] || ""}
                                 disabled={isAnswered}
                             >
