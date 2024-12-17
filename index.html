@@ -10,18 +10,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
-    <!-- Styles -->
     <style>
         body {
             background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-            font-family: 'Comfortaa', cursive;
+            font-family: Arial, sans-serif;
         }
-        .game-container {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
+        .draggable {
+            cursor: move;
+            user-select: none;
+        }
+        .dragging {
+            opacity: 0.5;
         }
         .correct {
             background-color: #d4edda !important;
@@ -34,12 +33,12 @@
     </style>
 </head>
 <body>
-    <div id="root" class="min-h-screen flex items-center justify-center p-4"></div>
+    <div id="root" class="min-h-screen p-4"></div>
 
     <script type="text/babel">
         const { useState } = React;
 
-        const GamificationChallenge = () => {
+        const GamificationLearningChallenge = () => {
             const correctAnswers = {
                 blank1: "Learning",
                 blank2: "Game",
@@ -72,7 +71,6 @@
                 blank7: "",
                 blank8: "",
             });
-
             const [feedback, setFeedback] = useState({});
 
             function shuffle(array) {
@@ -92,119 +90,68 @@
                 setFeedback(feedbackObj);
             };
 
+            const HistoricalTimelineChallenge = () => {
+                const [milestones, setMilestones] = useState([
+                    { id: 'video_games', text: 'Video game concept of points/levels' },
+                    { id: 'education', text: 'First educational gamification studies' },
+                    { id: 'term_coined', text: 'Term "Gamification" coined by Nick Pelling' },
+                    { id: 'widespread', text: 'Widespread adoption in corporate training' }
+                ]);
+
+                return (
+                    <div className="p-4 bg-blue-50 rounded">
+                        <h3 className="font-bold mb-2">Historical Timeline Challenge</h3>
+                        <p>Drag milestones to order them chronologically.</p>
+                        <ul>
+                            {milestones.map((m, i) => <li key={i} className="bg-white p-2 mb-2 rounded">{m.text}</li>)}
+                        </ul>
+                    </div>
+                );
+            };
+
             return (
-                <div className="game-container p-8 max-w-4xl mx-auto text-center">
-                    <h1 className="text-4xl font-bold text-gray-800 mb-6">🎮 Gamification Learning Challenge</h1>
-                    <p className="text-gray-600 mb-4 text-lg">
-                        “Gamification in 
-                        <select
-                            name="blank1"
-                            value={answers.blank1}
-                            onChange={handleChange}
-                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank1}`}
-                        >
-                            <option value="">--Select--</option>
-                            {dropdownOptions.blank1.map((option, index) => (
-                                <option key={index} value={option}>{option}</option>
-                            ))}
-                        </select>
-                        is the integration of 
-                        <select
-                            name="blank2"
-                            value={answers.blank2}
-                            onChange={handleChange}
-                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank2}`}
-                        >
-                            <option value="">--Select--</option>
-                            {dropdownOptions.blank2.map((option, index) => (
-                                <option key={index} value={option}>{option}</option>
-                            ))}
-                        </select>
-                        mechanics, such as 
-                        <select
-                            name="blank3"
-                            value={answers.blank3}
-                            onChange={handleChange}
-                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank3}`}
-                        >
-                            <option value="">--Select--</option>
-                            {dropdownOptions.blank3.map((option, index) => (
-                                <option key={index} value={option}>{option}</option>
-                            ))}
-                        </select>
-                        , badges, 
-                        <select
-                            name="blank4"
-                            value={answers.blank4}
-                            onChange={handleChange}
-                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank4}`}
-                        >
-                            <option value="">--Select--</option>
-                            {dropdownOptions.blank4.map((option, index) => (
-                                <option key={index} value={option}>{option}</option>
-                            ))}
-                        </select>
-                        , and 
-                        <select
-                            name="blank5"
-                            value={answers.blank5}
-                            onChange={handleChange}
-                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank5}`}
-                        >
-                            <option value="">--Select--</option>
-                            {dropdownOptions.blank5.map((option, index) => (
-                                <option key={index} value={option}>{option}</option>
-                            ))}
-                        </select>
-                        like 
-                        <select
-                            name="blank6"
-                            value={answers.blank6}
-                            onChange={handleChange}
-                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank6}`}
-                        >
-                            <option value="">--Select--</option>
-                            {dropdownOptions.blank6.map((option, index) => (
-                                <option key={index} value={option}>{option}</option>
-                            ))}
-                        </select>
-                        to engage learners and enhance their 
-                        <select
-                            name="blank7"
-                            value={answers.blank7}
-                            onChange={handleChange}
-                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank7}`}
-                        >
-                            <option value="">--Select--</option>
-                            {dropdownOptions.blank7.map((option, index) => (
-                                <option key={index} value={option}>{option}</option>
-                            ))}
-                        </select>
-                        and 
-                        <select
-                            name="blank8"
-                            value={answers.blank8}
-                            onChange={handleChange}
-                            className={`mx-1 border rounded px-2 py-1 ${feedback.blank8}`}
-                        >
-                            <option value="">--Select--</option>
-                            {dropdownOptions.blank8.map((option, index) => (
-                                <option key={index} value={option}>{option}</option>
-                            ))}
-                        </select>
-                        .”
+                <div className="bg-gray-100 p-6 rounded-lg max-w-4xl mx-auto">
+                    <h1 className="text-3xl font-bold mb-4 text-center">What does "Gamification in learning mean?"</h1>
+
+                    {/* Fill-in-the-Blank Task */}
+                    <div className="p-4 bg-white rounded shadow">
+                        <p>
+                            “Gamification in
+                            <select name="blank1" value={answers.blank1} onChange={handleChange} className={`mx-1 ${feedback.blank1}`}>
+                                <option value="">--Select--</option>
+                                {dropdownOptions.blank1.map((option, i) => <option key={i} value={option}>{option}</option>)}
+                            </select>
+                            is the integration of
+                            <select name="blank2" value={answers.blank2} onChange={handleChange} className={`mx-1 ${feedback.blank2}`}>
+                                <option value="">--Select--</option>
+                                {dropdownOptions.blank2.map((option, i) => <option key={i} value={option}>{option}</option>)}
+                            </select>
+                            mechanics...”
+                        </p>
+                        <button onClick={checkAnswers} className="mt-4 bg-green-500 text-white p-2 rounded">Check Answers</button>
+                    </div>
+
+                    <p className="text-sm mt-4 text-gray-600">
+                        (Source: Kapp, K. M. (2012). The Gamification of Learning and Instruction: Game-Based Methods and Strategies for Training and Education.)
                     </p>
-                    <button
-                        onClick={checkAnswers}
-                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
-                    >
-                        Check Answers
-                    </button>
+
+                    {/* Additional Tasks */}
+                    <div className="mt-6 grid md:grid-cols-2 gap-4">
+                        <HistoricalTimelineChallenge />
+                        <div className="p-4 bg-purple-50 rounded">
+                            <h3 className="font-bold mb-2">Gamification Elements Decoder</h3>
+                            <p>Match gamification elements to their benefits.</p>
+                            <ul>
+                                <li className="bg-white p-2 mb-2 rounded">Points → Motivation</li>
+                                <li className="bg-white p-2 mb-2 rounded">Badges → Achievement</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             );
         };
 
-        ReactDOM.render(<GamificationChallenge />, document.getElementById("root"));
+        ReactDOM.render(<GamificationLearningChallenge />, document.getElementById("root"));
     </script>
 </body>
 </html>
