@@ -30,146 +30,146 @@
 
             // --- Fill-in-the-Blank Task ---
             const FillInTheBlankTask = () => {
-                const options = {
-                    1: ["Learning", "Underwater basket weaving", "Gaming", "Adventures"],
-                    2: ["Game", "Spoon juggling", "Entertainment", "Board"],
-                    3: ["Points", "Glitter explosions", "Rewards", "Tokens"],
-                    4: ["Leaderboards", "Penguin wrestling", "Rewards", "Levels"],
-                    5: ["Challenges", "Yodeling contests", "Goals", "Fun"],
-                    6: ["Education", "Unicorn riding", "Sports", "Adventures"],
-                    7: ["Motivation", "Donut consumption", "Advancement", "Teaching"],
-                    8: ["Participation", "Pillow fighting", "Rewards", "Engagement"]
-                };
+    const options = {
+        1: ["Learning", "Underwater basket weaving", "Gaming", "Adventures"],
+        2: ["Game", "Spoon juggling", "Entertainment", "Board"],
+        3: ["Points", "Glitter explosions", "Rewards", "Tokens"],
+        4: ["Leaderboards", "Penguin wrestling", "Rewards", "Levels"],
+        5: ["Challenges", "Yodeling contests", "Goals", "Fun"],
+        6: ["Education", "Unicorn riding", "Sports", "Adventures"],
+        7: ["Motivation", "Donut consumption", "Advancement", "Teaching"],
+        8: ["Participation", "Pillow fighting", "Rewards", "Engagement"]
+    };
 
-                const correctAnswers = {
-                    1: "Learning",
-                    2: "Game",
-                    3: "Points",
-                    4: "Leaderboards",
-                    5: "Challenges",
-                    6: "Education",
-                    7: "Motivation",
-                    8: "Participation"
-                };
+    const correctAnswers = {
+        1: "Learning",
+        2: "Game",
+        3: "Points",
+        4: "Leaderboards",
+        5: "Challenges",
+        6: "Education",
+        7: "Motivation",
+        8: "Participation"
+    };
 
-                const [userAnswers, setUserAnswers] = useState({});
-                const [feedback, setFeedback] = useState({});
+    const [userAnswers, setUserAnswers] = useState({});
+    const [feedback, setFeedback] = useState({});
 
-                const handleCheckAnswers = () => {
-                    const newFeedback = {};
-                    let allCorrect = true;
+    const handleCheckAnswers = () => {
+        const newFeedback = {};
+        let allCorrect = true;
 
-                    Object.keys(correctAnswers).forEach(key => {
-                        if (userAnswers[key] === correctAnswers[key]) {
-                            newFeedback[key] = "correct";
-                        } else {
-                            newFeedback[key] = "incorrect";
-                            allCorrect = false;
-                        }
-                    });
+        Object.keys(correctAnswers).forEach(key => {
+            if (userAnswers[key] === correctAnswers[key]) {
+                newFeedback[key] = "correct";
+            } else {
+                newFeedback[key] = "incorrect";
+                allCorrect = false;
+            }
+        });
 
-                    setFeedback(newFeedback);
+        setFeedback(newFeedback);
 
-                    if (allCorrect) {
-                        setScore(prev => prev + 100);
-                        setCompleted(prev => ({ ...prev, fillBlank: true }));
-                        alert("Great job! You completed the Fill-in-the-Blank challenge!");
-                    }
-                };
+        if (allCorrect) {
+            setScore(prev => prev + 100);
+            setCompleted(prev => ({ ...prev, fillBlank: true }));
+            alert("Great job! You completed the Fill-in-the-Blank challenge!");
+        }
+    };
 
-                return (
-                    <div className="p-4 bg-blue-50 rounded mb-6">
-                        <h3 className="font-bold mb-2">What does "Gamification in learning mean?"</h3>
-                        <p>
-                            Gamification in&nbsp;
-                            <select 
-                                onChange={(e) => setUserAnswers({ ...userAnswers, 1: e.target.value })} 
-                                className={feedback[1]}
-                            >
-                                <option value="">--Select--</option>
-                                {options[1].sort(() => Math.random() - 0.5).map((opt, index) => (
-                                    <option key={index} value={opt}>{opt}</option>
-                                ))}
-                            </select>
-                            &nbsp;is the integration of&nbsp;
-                            <select 
-                                onChange={(e) => setUserAnswers({ ...userAnswers, 2: e.target.value })} 
-                                className={feedback[2]}
-                            >
-                                <option value="">--Select--</option>
-                                {options[2].sort(() => Math.random() - 0.5).map((opt, index) => (
-                                    <option key={index} value={opt}>{opt}</option>
-                                ))}
-                            </select>
-                            mechanics, such as&nbsp;
-                            <select 
-                                onChange={(e) => setUserAnswers({ ...userAnswers, 3: e.target.value })} 
-                                className={feedback[3]}
-                            >
-                                <option value="">--Select--</option>
-                                {options[3].sort(() => Math.random() - 0.5).map((opt, index) => (
-                                    <option key={index} value={opt}>{opt}</option>
-                                ))}
-                            </select>,
-                            badges,&nbsp;
-                            <select 
-                                onChange={(e) => setUserAnswers({ ...userAnswers, 4: e.target.value })} 
-                                className={feedback[4]}
-                            >
-                                <option value="">--Select--</option>
-                                {options[4].sort(() => Math.random() - 0.5).map((opt, index) => (
-                                    <option key={index} value={opt}>{opt}</option>
-                                ))}
-                            </select>,
-                            and&nbsp;
-                            <select 
-                                onChange={(e) => setUserAnswers({ ...userAnswers, 5: e.target.value })} 
-                                className={feedback[5]}
-                            >
-                                <option value="">--Select--</option>
-                                {options[5].sort(() => Math.random() - 0.5).map((opt, index) => (
-                                    <option key={index} value={opt}>{opt}</option>
-                                ))}
-                            </select>, like&nbsp;
-                            <select 
-                                onChange={(e) => setUserAnswers({ ...userAnswers, 6: e.target.value })} 
-                                className={feedback[6]}
-                            >
-                                <option value="">--Select--</option>
-                                {options[6].sort(() => Math.random() - 0.5).map((opt, index) => (
-                                    <option key={index} value={opt}>{opt}</option>
-                                ))}
-                            </select>
-                            &nbsp;to engage learners and enhance their&nbsp;
-                            <select 
-                                onChange={(e) => setUserAnswers({ ...userAnswers, 7: e.target.value })} 
-                                className={feedback[7]}
-                            >
-                                <option value="">--Select--</option>
-                                {options[7].sort(() => Math.random() - 0.5).map((opt, index) => (
-                                    <option key={index} value={opt}>{opt}</option>
-                                ))}
-                            </select>
-                            and&nbsp;
-                            <select 
-                                onChange={(e) => setUserAnswers({ ...userAnswers, 8: e.target.value })} 
-                                className={feedback[8]}
-                            >
-                                <option value="">--Select--</option>
-                                {options[8].sort(() => Math.random() - 0.5).map((opt, index) => (
-                                    <option key={index} value={opt}>{opt}</option>
-                                ))}
-                            </select>.
-                        </p>
-                        <button 
-                            onClick={handleCheckAnswers}
-                            className="mt-4 bg-green-500 text-white p-2 rounded"
-                        >
-                            Check Answers
-                        </button>
-                    </div>
-                );
-            };
+    return (
+        <div className="p-4 bg-blue-50 rounded mb-6">
+            <h3 className="font-bold mb-2">What does "Gamification in learning mean?"</h3>
+            <p>
+                Gamification in&nbsp;
+                <select
+                    onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 1: e.target.value }))}
+                    className={feedback[1]}
+                >
+                    <option value="">--Select--</option>
+                    {options[1].sort(() => Math.random() - 0.5).map((opt, index) => (
+                        <option key={index} value={opt}>{opt}</option>
+                    ))}
+                </select>
+                &nbsp;is the integration of&nbsp;
+                <select
+                    onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 2: e.target.value }))}
+                    className={feedback[2]}
+                >
+                    <option value="">--Select--</option>
+                    {options[2].sort(() => Math.random() - 0.5).map((opt, index) => (
+                        <option key={index} value={opt}>{opt}</option>
+                    ))}
+                </select>
+                mechanics, such as&nbsp;
+                <select
+                    onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 3: e.target.value }))}
+                    className={feedback[3]}
+                >
+                    <option value="">--Select--</option>
+                    {options[3].sort(() => Math.random() - 0.5).map((opt, index) => (
+                        <option key={index} value={opt}>{opt}</option>
+                    ))}
+                </select>,
+                badges,&nbsp;
+                <select
+                    onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 4: e.target.value }))}
+                    className={feedback[4]}
+                >
+                    <option value="">--Select--</option>
+                    {options[4].sort(() => Math.random() - 0.5).map((opt, index) => (
+                        <option key={index} value={opt}>{opt}</option>
+                    ))}
+                </select>,
+                and&nbsp;
+                <select
+                    onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 5: e.target.value }))}
+                    className={feedback[5]}
+                >
+                    <option value="">--Select--</option>
+                    {options[5].sort(() => Math.random() - 0.5).map((opt, index) => (
+                        <option key={index} value={opt}>{opt}</option>
+                    ))}
+                </select>, like&nbsp;
+                <select
+                    onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 6: e.target.value }))}
+                    className={feedback[6]}
+                >
+                    <option value="">--Select--</option>
+                    {options[6].sort(() => Math.random() - 0.5).map((opt, index) => (
+                        <option key={index} value={opt}>{opt}</option>
+                    ))}
+                </select>
+                &nbsp;to engage learners and enhance their&nbsp;
+                <select
+                    onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 7: e.target.value }))}
+                    className={feedback[7]}
+                >
+                    <option value="">--Select--</option>
+                    {options[7].sort(() => Math.random() - 0.5).map((opt, index) => (
+                        <option key={index} value={opt}>{opt}</option>
+                    ))}
+                </select>
+                and&nbsp;
+                <select
+                    onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 8: e.target.value }))}
+                    className={feedback[8]}
+                >
+                    <option value="">--Select--</option>
+                    {options[8].sort(() => Math.random() - 0.5).map((opt, index) => (
+                        <option key={index} value={opt}>{opt}</option>
+                    ))}
+                </select>.
+            </p>
+            <button
+                onClick={handleCheckAnswers}
+                className="mt-4 bg-green-500 text-white p-2 rounded"
+            >
+                Check Answers
+            </button>
+        </div>
+    );
+};
 
             // --- Historical Timeline Task ---
             const HistoricalTimelineTask = () => {
