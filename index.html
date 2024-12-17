@@ -19,7 +19,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useEffect } = React;  {/* Add this line to import useEffect */}
 
         const GamificationLearningQuest = () => {
             const [score, setScore] = useState(0);
@@ -171,22 +171,20 @@
                 );
             };
 
-        // Historical Timeline Task
-        const HistoricalTimelineTask = () => {
-    const [milestones, setMilestones] = useState([
-        { id: 1, text: "Video game concept of points/levels" },
-        { id: 2, text: "Term 'Gamification' coined by Nick Pelling" },
-        { id: 3, text: "First educational gamification studies" },
-        { id: 4, text: "Widespread adoption in corporate training" }
-    ]);
+            // --- Historical Timeline Task ---
+            const HistoricalTimelineTask = () => {
+                const [milestones, setMilestones] = useState([
+                    { id: 1, text: "Video game concept of points/levels" },
+                    { id: 2, text: "Term 'Gamification' coined by Nick Pelling" },
+                    { id: 3, text: "First educational gamification studies" },
+                    { id: 4, text: "Widespread adoption in corporate training" }
+                ]);
 
-    // Shuffle the milestones array
-    useEffect(() => {
-        const shuffledMilestones = [...milestones].sort(() => Math.random() - 0.5);
-        setMilestones(shuffledMilestones);
-    }, []);
- 
-
+                // Shuffle the milestones array
+                useEffect(() => {
+                    const shuffledMilestones = [...milestones].sort(() => Math.random() - 0.5);
+                    setMilestones(shuffledMilestones);
+                }, []);
 
                 const [draggedItem, setDraggedItem] = useState(null);
 
