@@ -210,7 +210,7 @@
 
                     <div className="grid md:grid-cols-2 gap-8 mb-8">
                         <div className="challenge-card">
-                            <HistoricalTimelineChallenge />
+                            {/* Placeholder for HistoricalTimelineChallenge */}
                         </div>
                         <div className="challenge-card">
                             <AestheticChoicesChallenge />
@@ -219,7 +219,7 @@
 
                     <div className="grid md:grid-cols-2 gap-8 mb-8">
                         <div className="challenge-card">
-                            <FillInTheBlanks />
+                            {/* Placeholder for FillInTheBlanks */}
                         </div>
                         <div className="challenge-card">
                             <GamificationElementsDecoder />
@@ -228,4 +228,36 @@
 
                     <div className="bg-white p-6 rounded-lg shadow-lg">
                         <h3 className="text-2xl font-bold mb-4 text-center">🏆 Your Learning Quest</h3>
-                        <div className="w-full bg-gray-
+                        <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
+                            <div 
+                                className="progress-bar h-4 rounded-full" 
+                                style={{ width: `${score}%` }}
+                            ></div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <span className="text-lg font-semibold">Total Score: {score} points</span>
+                            <div className="flex space-x-2">
+                                {Object.entries(completed).map(([key, value]) => (
+                                    <span 
+                                        key={key} 
+                                        className={`p-2 rounded-full ${
+                                            value 
+                                                ? 'bg-green-500 text-white achievement-badge completed' 
+                                                : 'bg-gray-300'
+                                        }`}
+                                    >
+                                        {key}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<GamificationLearningChallenge />, document.getElementById('root'));
+    </script>
+</body>
+
+</html>
