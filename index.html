@@ -171,15 +171,49 @@
                 );
             };
 
+            // --- Historical Timeline Task ---
+            const HistoricalTimelineTask = () => {
+                const [milestones, setMilestones] = useState([
+                    { id: 1, text: "Video game concept of points/levels" },
+                    { id: 2, text: "Term 'Gamification' coined by Nick Pelling" },
+                    { id: 3, text: "First educational gamification studies" },
+                    { id: 4, text: "Widespread adoption in corporate training" }
+                ]);
+
+                const handleCheckOrder = () => {
+                    const correctOrder = [1, 2, 3, 4];
+                    const isCorrect = milestones.map(m => m.id).every((id, index) => id === correctOrder[index]);
+
+                    if (isCorrect) {
+                        setScore(prev => prev + 100);
+                        setCompleted(prev => ({ ...prev, timeline: true }));
+                        alert("Well done! You ordered the timeline correctly.");
+                    } else {
+                        alert("Try again! The order is incorrect.");
+                    }
+                };
+
+                return (
+                    <div className="p-4 bg-yellow-50 rounded mb-6">
+                        <h3 className="font-bold mb-2">Historical Timeline Challenge</h3>
+                        {milestones.map((milestone, index) => (
+                            <div key={index} className="bg-white p-2 mb-2 shadow rounded draggable">
+                                {milestone.text}
+                            </div>
+                        ))}
+                        <button onClick={handleCheckOrder} className="mt-4 bg-blue-500 text-white p-2 rounded">
+                            Check Timeline
+                        </button>
+                    </div>
+                );
+            };
+
             return (
                 <div className="bg-gray-100 p-6 rounded-lg max-w-4xl mx-auto">
                     <h2 className="text-2xl font-bold mb-4">Gamification Learning Quest</h2>
-                    
-                    {/* Fill-in-the-Blank Task */}
                     <FillInTheBlankTask />
-
-                    {/* Source */}
-                    <p className="italic text-gray-500">(Source: Kapp, K. M. (2012). The Gamification of Learning and Instruction: Game-Based Methods and Strategies for Training and Education.)</p>
+                    <HistoricalTimelineTask />
+                    <p className="italic text-gray-500">(Source: Kapp, K. M. (2012). The Gamification of Learning and Instruction)</p>
                 </div>
             );
         };
