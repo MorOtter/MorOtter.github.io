@@ -75,7 +75,6 @@
                     if (allCorrect) {
                         setScore(prev => prev + 100);
                         setCompleted(prev => ({ ...prev, fillBlank: true }));
-                        alert("Great job! You completed the Fill-in-the-Blank challenge!");
                     }
                 };
 
@@ -232,9 +231,6 @@
                     if (isCorrect) {
                         setScore(prev => prev + 100);
                         setCompleted(prev => ({ ...prev, timeline: true }));
-                        alert("Well done! You ordered the timeline correctly.");
-                    } else {
-                        alert("Try again! The order is incorrect.");
                     }
                 };
 
