@@ -3,100 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freud's Jumper Review</title>
+    <title>Gamification Learning Adventure</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            font-family: 'Comfortaa', cursive;
         }
-        h1 {
-            text-align: center;
-            margin: 0;
-            padding: 5px;
-            font-size: 2em;
-            white-space: nowrap;
-        }
-        .image-container {
-            position: relative;
-            display: inline-block;
-            margin-top: 10px;
-        }
-        .speech-bubble {
-            position: absolute;
-            bottom: 50px;
-            right: 50px;
-            width: 240px;
-            height: 130px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: bold;
-            color: black;
-            background-color: white;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1.2;
-            overflow-wrap: break-word;
+        .game-container {
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 20px;
-            z-index: 2;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
         }
-        .speech-bubble:before {
-            content: '';
-            position: absolute;
-            top: -30px; /* Increased distance from bubble */
-            left: 25%;
-            width: 40px; /* Wider spike */
-            height: 50px; /* Taller spike */
-            background-color: white;
-            clip-path: polygon(0 100%, 50% 0, 100% 100%, 50% 85%); /* Modified shape for cartoon look */
-            transform: translateX(-50%);
+        .challenge-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .challenge-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .draggable {
+            cursor: grab;
+            user-select: none;
+            background: linear-gradient(145deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .draggable:hover {
+            transform: scale(1.05);
+        }
+        .dragging {
+            opacity: 0.7;
+            transform: rotate(5deg);
+        }
+        .progress-bar {
+            background: linear-gradient(to right, #11998e, #38ef7d);
+        }
+        .achievement-badge {
+            transition: all 0.3s ease;
+        }
+        .achievement-badge.completed {
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
 <body>
-    <h1>Freud's Jumper Review</h1>
+    <div id="root" class="min-h-screen flex items-center justify-center p-4"></div>
 
-    <div class="image-container">
-        <img src="Freud.png" alt="Freud with Speech Bubble" style="width:500px;">
-        <div class="speech-bubble" id="speech"></div>
-    </div>
+    <script type="text/babel">
+        const { useState } = React;
 
-    <script>
-        const quotes = [
-            "Ah, ze Christmas jumper - a textile manifestation of one's unresolved childhood conflicts, where ze knitted reindeer represents both a primal father figure and a sublimated desire for maternal warmth!",
-            "Notice how ze male wearing a sequined Santa motif is clearly compensating - his jumper is but a woolly projection of unacknowledged libidinal energies seeking external validation!",
-            "Zis garish knitwear is nothing more than a desperate attempt to transform ze repressed unconscious into a public spectacle of seasonal performativity!",
-            "Ze Christmas jumper is clearly a symbolic displacement of sexual frustration, transforming unspoken erotic tensions into a landscape of anthropomorphic snowmen and dancing penguins!",
-            "In ze intricate cable-knit patterns, one can discern ze deep-seated neuroses of ze wearer - each festive motif a complex negotiation between societal expectations and primitive id-driven impulses!",
-            "Zis reindeer motif is clearly a manifestation of ze Oedipus complex - ze wearer unconsciously wishes to replace Santa as ze dominant patriarchal figure, yet simultaneously seeks maternal comfort through ze soft, nurturing wool!",
-            "Ze clash between ze rational ego and ze primitive id is nowhere more apparent than in zis jumper - where ze carefully structured Nordic pattern struggles against ze chaotic, impulse-driven snowman graphic!",
-            "Observe how ze Christmas jumper becomes a textile representation of ze superego's repressive mechanisms - ze wearer attempts to sublimate their deepest sexual tensions into a socially acceptable form of festive performativity!",
-            "Ze knitted pattern is but a thin membrane between conscious restraint and ze roiling, uncontrollable libidinal energies of ze unconscious - each sequin a potential site of neurotic displacement!",
-            "In zis garment, we see ze ultimate negotiation between ze pleasure principle and ze reality principle - ze wearer simultaneously seeks infantile comfort and adult social acceptance through zis ridiculous wool-based expression of psychological tension!",
-            "Your jumper reveals a profound psychological landscape - ze placement of zis dancing elf suggests a clear compensation mechanism for unresolved childhood inadequacies!",
-            "Ze selection of color palette is not merely an aesthetic choice, but a complex negotiation between ze wearer's conscious performativity and zeir deeply repressed chromatic unconscious desires!",
-            "I declare zis jumper - with its asymmetrical snowflake pattern - a masterful textile representation of ze eternal conflict between ze ego's structured mediations and ze id's chaotic impulses!",
-            "Achtung! Ze sequin placement on zis garment is nothing short of a profound neurological mapping - each glittering point a potential site of unresolved psychological trauma transformed into festive expression!",
-            "By ze principles of psychoanalysis, I pronounce zis jumper not merely a garment, but a complex phenomenological text - where ze knitted reindeer becomes a symbolic negotiation between societal expectations and primitive libidinal energies!"
-        ];
+        const GamificationLearningChallenge = () => {
+            const [score, setScore] = useState(0);
+            const [completed, setCompleted] = useState({
+                origin: false,
+                definition: false,
+                application: false,
+                benefit: false
+            });
 
-        function displayRandomQuote() {
-            const speechBubble = document.getElementById('speech');
-            if (speechBubble && !speechBubble.textContent) {
-                const randomIndex = Math.floor(Math.random() * quotes.length);
-                speechBubble.textContent = quotes[randomIndex];
-            }
-        }
+            const HistoricalTimelineChallenge = () => {
+                const [milestones, setMilestones] = useState([
+                    { id: 'video_games', text: '🎮 Video game concept of points/levels' },
+                    { id: 'term_coined', text: '💡 Term "Gamification" coined by Nick Pelling' },
+                    { id: 'education', text: '📚 First educational gamification studies' },
+                    { id: 'widespread', text: '🌐 Widespread adoption in corporate training' }
+                ]);
 
-        window.onload = displayRandomQuote;
+                const [draggedItem, setDraggedItem] = useState(null);
+
+                const handleDragStart = (e, item) => {
+                    setDraggedItem(item);
+                    e.target.classList.add('dragging');
+                };
+
+                const handleDragEnd = (e) => {
+                    e.target.classList.remove('dragging');
+                };
+
+                const handleDragOver = (e) => {
+                    e.preventDefault();
+                };
+
+                const handleDrop = (e, targetItem) => {
+                    if (!draggedItem) return;
+
+                    const newMilestones = milestones.map(m => 
+                        m.id === targetItem.id ? draggedItem : 
+                        m.id === draggedItem.id ? targetItem : m
+                    );
+
+                    setMilestones(newMilestones);
+                };
+
+                const checkOrder = () => {
+                    const correctOrder = [
+                        'video_games', 
+                        'term_coined', 
+                        'education', 
+                        'widespread'
+                    ];
+                    const isCorrect = milestones.map(m => m.id).every((id, index) => id === correctOrder[index]);
+                    
+                    if (isCorrect) {
+                        setScore(prevScore => prevScore + 100);
+                        setCompleted(prev => ({ ...prev, origin: true }));
+                        Swal.fire({
+                            title: 'Historical Timeline Mastered!',
+                            text: 'You\'ve correctly traced the evolution of gamification!',
+                            icon: 'success',
+                            confirmButtonText: 'Awesome!'
+                        });
+                    }
+                };
+
+                return (
+                    <div className="p-6 bg-blue-50 rounded-lg shadow-lg">
+                        <h3 className="text-2xl font-bold mb-4 text-blue-700">🕰️ Time Travel Challenge</h3>
+                        <p className="mb-4 text-gray-600">Drag the historical milestones into the correct chronological order!</p>
+                        <div className="space-y-4">
+                            {milestones.map((milestone) => (
+                                <div 
+                                    key={milestone.id} 
+                                    className="bg-white p-4 rounded-lg shadow draggable transform transition-all hover:scale-105"
+                                    draggable
+                                    onDragStart={(e) => handleDragStart(e, milestone)}
+                                    onDragEnd={handleDragEnd}
+                                    onDragOver={handleDragOver}
+                                    onDrop={(e) => handleDrop(e, milestone)}
+                                >
+                                    {milestone.text}
+                                </div>
+                            ))}
+                        </div>
+                        <button 
+                            onClick={checkOrder}
+                            className="mt-6 w-full bg-gradient-to-r from-green-400 to-blue-500 text-white p-3 rounded-lg hover:from-green-500 hover:to-blue-600 transition-all"
+                        >
+                            Check Timeline
+                        </button>
+                    </div>
+                );
+            };
+
+            const GamificationElementsDecoder = () => {
+                const matchings = [
+                    { gameElement: '🏆 Points', learningTransformation: 'Motivation tracking' },
+                    { gameElement: '📈 Levels', learningTransformation: 'Progress visualization' },
+                    { gameElement: '🎖️ Badges', learningTransformation: 'Achievement recognition' },
+                    { gameElement: '🏅 Leaderboards', learningTransformation: 'Competitive learning' }
+                ];
+
+                const [matches, setMatches] = useState(matchings.map(m => ({ ...m, matched: false })));
+                const [draggedItem, setDraggedItem] = useState(null);
+
+                const handleDragStart = (e, item) => {
+                    setDraggedItem(item);
+                    e.target.classList.add('dragging');
+                };
+
+                const handleDragEnd = (e) => {
+                    e.target.classList.remove('dragging');
+                };
+
+                const handleDragOver = (e) => {
+                    e.preventDefault();
+                };
+
+                const handleDrop = (e, targetItem) => {
+                    if (!draggedItem) return;
+
+                    const newMatches = matches.map(m => 
+                        m.learningTransformation === targetItem.learningTransformation 
+                            ? { ...m, matched: m.gameElement === draggedItem.gameElement }
+                            : m
+                    );
+
+                    setMatches(newMatches);
+
+                    const allMatched = newMatches.every(m => m.matched);
+                    if (allMatched) {
+                        setScore(prevScore => prevScore + 150);
+                        setCompleted(prev => ({ ...prev, definition: true }));
+                        Swal.fire({
+                            title: 'Gamification Decoded!',
+                            text: 'You\'ve successfully matched game elements to learning transformations!',
+                            icon: 'success',
+                            confirmButtonText: 'Fantastic!'
+                        });
+                    }
+                };
+
+                return (
+                    <div className="p-6 bg-purple-50 rounded-lg shadow-lg">
+                        <h3 className="text-2xl font-bold mb-4 text-purple-700">🧩 Gamification Decoder</h3>
+                        <p className="mb-4 text-gray-600">Match game elements to their learning transformations!</p>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                {matches.map((match, index) => (
+                                    <div 
+                                        key={index} 
+                                        className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg mb-4 draggable transform transition-all hover:scale-105"
+                                        draggable
+                                        onDragStart={(e) => handleDragStart(e, match)}
+                                        onDragEnd={handleDragEnd}
+                                    >
+                                        {match.gameElement}
+                                    </div>
+                                ))}
+                            </div>
+                            <div>
+                                {matches.map((match, index) => (
+                                    <div 
+                                        key={index} 
+                                        className="bg-white p-4 rounded-lg mb-4 border-2 border-dashed border-gray-300"
+                                        onDragOver={handleDragOver}
+                                        onDrop={(e) => handleDrop(e, match)}
+                                    >
+                                        {match.learningTransformation}
+                                        {match.matched && <span className="ml-2">✅</span>}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            return (
+                <div className="game-container w-full max-w-6xl mx-auto p-8">
+                    <h1 className="text-4xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">
+                        Gamification Learning Adventure
+                    </h1>
+                    
+                    <div className="grid md:grid-cols-2 gap-8 mb-8">
+                        <div className="challenge-card">
+                            <HistoricalTimelineChallenge />
+                        </div>
+                        <div className="challenge-card">
+                            <GamificationElementsDecoder />
+                        </div>
+                    </div>
+
+                    <div className="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 className="text-2xl font-bold mb-4 text-center">🏆 Your Learning Quest</h3>
+                        <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
+                            <div 
+                                className="progress-bar h-4 rounded-full" 
+                                style={{width: `${score}%`}}
+                            ></div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <span className="text-lg font-semibold">Total Score: {score} points</span>
+                            <div className="flex space-x-2">
+                                {Object.entries(completed).map(([key, value]) => (
+                                    <span 
+                                        key={key} 
+                                        className={`p-2 rounded-full ${
+                                            value 
+                                            ? 'bg-green-500 text-white achievement-badge completed' 
+                                            : 'bg-gray-300'
+                                        }`}
+                                    >
+                                        {key}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<GamificationLearningChallenge />, document.getElementById('root'));
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
