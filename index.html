@@ -3,155 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gamification Learning Challenge</title>
-    <!-- External Libraries -->
+    <title>Gamification Learning Quest</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body {
-            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-            font-family: Arial, sans-serif;
-        }
-        .draggable {
-            cursor: move;
-            user-select: none;
-        }
-        .dragging {
-            opacity: 0.5;
-        }
-        .correct {
-            background-color: #d4edda !important;
-            color: #155724 !important;
-        }
-        .incorrect {
-            background-color: #f8d7da !important;
-            color: #721c24 !important;
-        }
+        .correct { background-color: #d4edda; }
+        .incorrect { background-color: #f8d7da; }
+        .draggable { cursor: move; user-select: none; }
+        .dragging { opacity: 0.5; }
     </style>
 </head>
 <body>
-    <div id="root" class="min-h-screen p-4"></div>
+    <div id="root"></div>
 
     <script type="text/babel">
         const { useState } = React;
 
-        const GamificationLearningChallenge = () => {
-            const correctAnswers = {
-                blank1: "Learning",
-                blank2: "Game",
-                blank3: "Points",
-                blank4: "Leaderboards",
-                blank5: "Challenges",
-                blank6: "Education",
-                blank7: "Motivation",
-                blank8: "Participation",
-            };
-
-            const dropdownOptions = {
-                blank1: shuffle(["Learning", "Underwater basket weaving", "Gaming", "Adventures"]),
-                blank2: shuffle(["Game", "Spoon juggling", "Entertainment", "Board"]),
-                blank3: shuffle(["Points", "Glitter explosions", "Rewards", "Tokens"]),
-                blank4: shuffle(["Leaderboards", "Penguin wrestling", "Rewards", "Levels"]),
-                blank5: shuffle(["Challenges", "Yodeling contests", "Goals", "Fun"]),
-                blank6: shuffle(["Education", "Unicorn riding", "Sports", "Adventures"]),
-                blank7: shuffle(["Motivation", "Donut consumption", "Advancement", "Teaching"]),
-                blank8: shuffle(["Participation", "Pillow fighting", "Rewards", "Engagement"]),
-            };
-
-            const [answers, setAnswers] = useState({
-                blank1: "",
-                blank2: "",
-                blank3: "",
-                blank4: "",
-                blank5: "",
-                blank6: "",
-                blank7: "",
-                blank8: "",
+        const GamificationLearningQuest = () => {
+            const [score, setScore] = useState(0);
+            const [completed, setCompleted] = useState({
+                fillBlank: false,
+                timeline: false
             });
-            const [feedback, setFeedback] = useState({});
 
-            function shuffle(array) {
-                return array.sort(() => Math.random() - 0.5);
-            }
+            // --- Fill-in-the-Blank Task ---
+            const FillInTheBlankTask = () => {
+                const options = {
+                    1: ["Learning", "Underwater basket weaving", "Gaming", "Adventures"],
+                    2: ["Game", "Spoon juggling", "Entertainment", "Board"],
+                    3: ["Points", "Glitter explosions", "Rewards", "Tokens"],
+                    4: ["Leaderboards", "Penguin wrestling", "Rewards", "Levels"],
+                    5: ["Challenges", "Yodeling contests", "Goals", "Fun"],
+                    6: ["Education", "Unicorn riding", "Sports", "Adventures"],
+                    7: ["Motivation", "Donut consumption", "Advancement", "Teaching"],
+                    8: ["Participation", "Pillow fighting", "Rewards", "Engagement"]
+                };
 
-            const handleChange = (e) => {
-                const { name, value } = e.target;
-                setAnswers((prev) => ({ ...prev, [name]: value }));
-            };
+                const correctAnswers = {
+                    1: "Learning",
+                    2: "Game",
+                    3: "Points",
+                    4: "Leaderboards",
+                    5: "Challenges",
+                    6: "Education",
+                    7: "Motivation",
+                    8: "Participation"
+                };
 
-            const checkAnswers = () => {
-                const feedbackObj = {};
-                for (let key in answers) {
-                    feedbackObj[key] = answers[key] === correctAnswers[key] ? "correct" : "incorrect";
-                }
-                setFeedback(feedbackObj);
-            };
+                const [userAnswers, setUserAnswers] = useState({});
+                const [feedback, setFeedback] = useState({});
 
-            const HistoricalTimelineChallenge = () => {
-                const [milestones, setMilestones] = useState([
-                    { id: 'video_games', text: 'Video game concept of points/levels' },
-                    { id: 'education', text: 'First educational gamification studies' },
-                    { id: 'term_coined', text: 'Term "Gamification" coined by Nick Pelling' },
-                    { id: 'widespread', text: 'Widespread adoption in corporate training' }
-                ]);
+                const handleCheckAnswers = () => {
+                    const newFeedback = {};
+                    let allCorrect = true;
+
+                    Object.keys(correctAnswers).forEach(key => {
+                        if (userAnswers[key] === correctAnswers[key]) {
+                            newFeedback[key] = "correct";
+                        } else {
+                            newFeedback[key] = "incorrect";
+                            allCorrect = false;
+                        }
+                    });
+
+                    setFeedback(newFeedback);
+
+                    if (allCorrect) {
+                        setScore(prev => prev + 100);
+                        setCompleted(prev => ({ ...prev, fillBlank: true }));
+                        alert("Great job! You completed the Fill-in-the-Blank challenge!");
+                    }
+                };
 
                 return (
-                    <div className="p-4 bg-blue-50 rounded">
-                        <h3 className="font-bold mb-2">Historical Timeline Challenge</h3>
-                        <p>Drag milestones to order them chronologically.</p>
-                        <ul>
-                            {milestones.map((m, i) => <li key={i} className="bg-white p-2 mb-2 rounded">{m.text}</li>)}
-                        </ul>
+                    <div className="p-4 bg-blue-50 rounded mb-6">
+                        <h3 className="font-bold mb-2">What does "Gamification in learning mean?"</h3>
+                        <p>
+                            Gamification in&nbsp;
+                            <select 
+                                onChange={(e) => setUserAnswers({ ...userAnswers, 1: e.target.value })} 
+                                className={feedback[1]}
+                            >
+                                <option value="">--Select--</option>
+                                {options[1].sort(() => Math.random() - 0.5).map((opt, index) => (
+                                    <option key={index} value={opt}>{opt}</option>
+                                ))}
+                            </select>
+                            &nbsp;is the integration of&nbsp;
+                            <select 
+                                onChange={(e) => setUserAnswers({ ...userAnswers, 2: e.target.value })} 
+                                className={feedback[2]}
+                            >
+                                <option value="">--Select--</option>
+                                {options[2].sort(() => Math.random() - 0.5).map((opt, index) => (
+                                    <option key={index} value={opt}>{opt}</option>
+                                ))}
+                            </select>
+                            mechanics, such as&nbsp;
+                            <select 
+                                onChange={(e) => setUserAnswers({ ...userAnswers, 3: e.target.value })} 
+                                className={feedback[3]}
+                            >
+                                <option value="">--Select--</option>
+                                {options[3].sort(() => Math.random() - 0.5).map((opt, index) => (
+                                    <option key={index} value={opt}>{opt}</option>
+                                ))}
+                            </select>,
+                            badges,&nbsp;
+                            <select 
+                                onChange={(e) => setUserAnswers({ ...userAnswers, 4: e.target.value })} 
+                                className={feedback[4]}
+                            >
+                                <option value="">--Select--</option>
+                                {options[4].sort(() => Math.random() - 0.5).map((opt, index) => (
+                                    <option key={index} value={opt}>{opt}</option>
+                                ))}
+                            </select>,
+                            and&nbsp;
+                            <select 
+                                onChange={(e) => setUserAnswers({ ...userAnswers, 5: e.target.value })} 
+                                className={feedback[5]}
+                            >
+                                <option value="">--Select--</option>
+                                {options[5].sort(() => Math.random() - 0.5).map((opt, index) => (
+                                    <option key={index} value={opt}>{opt}</option>
+                                ))}
+                            </select>, like&nbsp;
+                            <select 
+                                onChange={(e) => setUserAnswers({ ...userAnswers, 6: e.target.value })} 
+                                className={feedback[6]}
+                            >
+                                <option value="">--Select--</option>
+                                {options[6].sort(() => Math.random() - 0.5).map((opt, index) => (
+                                    <option key={index} value={opt}>{opt}</option>
+                                ))}
+                            </select>
+                            &nbsp;to engage learners and enhance their&nbsp;
+                            <select 
+                                onChange={(e) => setUserAnswers({ ...userAnswers, 7: e.target.value })} 
+                                className={feedback[7]}
+                            >
+                                <option value="">--Select--</option>
+                                {options[7].sort(() => Math.random() - 0.5).map((opt, index) => (
+                                    <option key={index} value={opt}>{opt}</option>
+                                ))}
+                            </select>
+                            and&nbsp;
+                            <select 
+                                onChange={(e) => setUserAnswers({ ...userAnswers, 8: e.target.value })} 
+                                className={feedback[8]}
+                            >
+                                <option value="">--Select--</option>
+                                {options[8].sort(() => Math.random() - 0.5).map((opt, index) => (
+                                    <option key={index} value={opt}>{opt}</option>
+                                ))}
+                            </select>.
+                        </p>
+                        <button 
+                            onClick={handleCheckAnswers}
+                            className="mt-4 bg-green-500 text-white p-2 rounded"
+                        >
+                            Check Answers
+                        </button>
                     </div>
                 );
             };
 
             return (
                 <div className="bg-gray-100 p-6 rounded-lg max-w-4xl mx-auto">
-                    <h1 className="text-3xl font-bold mb-4 text-center">What does "Gamification in learning mean?"</h1>
-
+                    <h2 className="text-2xl font-bold mb-4">Gamification Learning Quest</h2>
+                    
                     {/* Fill-in-the-Blank Task */}
-                    <div className="p-4 bg-white rounded shadow">
-                        <p>
-                            “Gamification in
-                            <select name="blank1" value={answers.blank1} onChange={handleChange} className={`mx-1 ${feedback.blank1}`}>
-                                <option value="">--Select--</option>
-                                {dropdownOptions.blank1.map((option, i) => <option key={i} value={option}>{option}</option>)}
-                            </select>
-                            is the integration of
-                            <select name="blank2" value={answers.blank2} onChange={handleChange} className={`mx-1 ${feedback.blank2}`}>
-                                <option value="">--Select--</option>
-                                {dropdownOptions.blank2.map((option, i) => <option key={i} value={option}>{option}</option>)}
-                            </select>
-                            mechanics...”
-                        </p>
-                        <button onClick={checkAnswers} className="mt-4 bg-green-500 text-white p-2 rounded">Check Answers</button>
-                    </div>
+                    <FillInTheBlankTask />
 
-                    <p className="text-sm mt-4 text-gray-600">
-                        (Source: Kapp, K. M. (2012). The Gamification of Learning and Instruction: Game-Based Methods and Strategies for Training and Education.)
-                    </p>
-
-                    {/* Additional Tasks */}
-                    <div className="mt-6 grid md:grid-cols-2 gap-4">
-                        <HistoricalTimelineChallenge />
-                        <div className="p-4 bg-purple-50 rounded">
-                            <h3 className="font-bold mb-2">Gamification Elements Decoder</h3>
-                            <p>Match gamification elements to their benefits.</p>
-                            <ul>
-                                <li className="bg-white p-2 mb-2 rounded">Points → Motivation</li>
-                                <li className="bg-white p-2 mb-2 rounded">Badges → Achievement</li>
-                            </ul>
-                        </div>
-                    </div>
+                    {/* Source */}
+                    <p className="italic text-gray-500">(Source: Kapp, K. M. (2012). The Gamification of Learning and Instruction: Game-Based Methods and Strategies for Training and Education.)</p>
                 </div>
             );
         };
 
-        ReactDOM.render(<GamificationLearningChallenge />, document.getElementById("root"));
+        ReactDOM.render(<GamificationLearningQuest />, document.getElementById('root'));
     </script>
 </body>
 </html>
