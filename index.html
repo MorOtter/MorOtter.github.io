@@ -24,7 +24,6 @@
             backdrop-filter: blur(10px);
         }
         .correct { background-color: #d4edda !important; color: #155724; }
-        .dragging { opacity: 0.5; }
     </style>
 </head>
 <body>
@@ -36,69 +35,75 @@
         const GamificationLearningChallenge = () => {
             const [score, setScore] = useState(0);
             const [completed, setCompleted] = useState({
-                timeline: false,
-                decoder: false,
-                definition: false,
+                fillInBlank: false,
             });
 
-            const HistoricalTimelineChallenge = () => {
-                const events = [
-                    { id: 1, event: 'Invention of the Printing Press', year: 1440 },
-                    { id: 2, event: 'First Online Learning Platform', year: 1990 },
-                    { id: 3, event: 'Introduction of Gamification in Education', year: 2010 },
-                ];
+            const FillInTheBlanksChallenge = () => {
+                const correctAnswers = {
+                    blank1: "points",
+                    blank2: "motivation",
+                };
 
-                const [timeline, setTimeline] = useState([]);
+                const [answers, setAnswers] = useState({
+                    blank1: "",
+                    blank2: "",
+                });
 
-                const handleDrop = (e, year) => {
-                    const eventId = e.dataTransfer.getData('eventId');
-                    const droppedEvent = events.find((event) => event.id === parseInt(eventId));
+                const handleChange = (e) => {
+                    const { name, value } = e.target;
+                    setAnswers((prev) => ({ ...prev, [name]: value }));
+                };
 
-                    if (droppedEvent && !timeline.find((item) => item.id === droppedEvent.id)) {
-                        const updatedTimeline = [...timeline, { ...droppedEvent, year }];
-                        setTimeline(updatedTimeline);
-
-                        // Check if complete after state update
-                        const isComplete = events.every((event) =>
-                            updatedTimeline.some((item) => item.id === event.id && item.year === event.year)
-                        );
-
-                        if (isComplete) {
-                            setScore((prev) => prev + 150);
-                            setCompleted((prev) => ({ ...prev, timeline: true }));
-                            Swal.fire('Correct!', 'You built the timeline correctly!', 'success');
-                        }
+                const checkAnswers = () => {
+                    if (
+                        answers.blank1 === correctAnswers.blank1 &&
+                        answers.blank2 === correctAnswers.blank2
+                    ) {
+                        setScore((prev) => prev + 100);
+                        setCompleted((prev) => ({ ...prev, fillInBlank: true }));
+                        Swal.fire('Correct!', 'You completed the sentence correctly!', 'success');
+                    } else {
+                        Swal.fire('Try Again', 'Some answers are incorrect.', 'error');
                     }
                 };
 
                 return (
-                    <div className="p-6 bg-yellow-50 rounded-lg shadow-lg">
-                        <h3 className="text-2xl font-bold mb-4 text-yellow-700">📜 Historical Timeline</h3>
-                        <p className="mb-4">Drag events to the correct year in history:</p>
-                        <div className="flex flex-wrap gap-4">
-                            {events.map((event) => (
-                                <div
-                                    key={event.id}
-                                    className="bg-blue-100 text-blue-700 p-2 rounded-lg draggable"
-                                    draggable
-                                    onDragStart={(e) => e.dataTransfer.setData('eventId', event.id)}
-                                >
-                                    {event.event}
-                                </div>
-                            ))}
-                        </div>
-                        <div className="mt-4">
-                            {[1440, 1990, 2010].map((year) => (
-                                <div
-                                    key={year}
-                                    className="p-4 border-dashed border-2 border-gray-400 rounded-lg mb-4"
-                                    onDragOver={(e) => e.preventDefault()}
-                                    onDrop={(e) => handleDrop(e, year)}
-                                >
-                                    Year: {year}
-                                </div>
-                            ))}
-                        </div>
+                    <div className="p-6 bg-purple-50 rounded-lg shadow-lg">
+                        <h3 className="text-2xl font-bold mb-4 text-purple-700">✍️ Fill in the Blank Challenge</h3>
+                        <p className="mb-4">
+                            Gamification uses <select
+                                name="blank1"
+                                value={answers.blank1}
+                                onChange={handleChange}
+                                className="border rounded px-2 py-1 mx-1"
+                            >
+                                <option value="">--Select--</option>
+                                <option value="badges">badges</option>
+                                <option value="points">points</option>
+                                <option value="timers">timers</option>
+                            </select>
+                            to track progress and <select
+                                name="blank2"
+                                value={answers.blank2}
+                                onChange={handleChange}
+                                className="border rounded px-2 py-1 mx-1"
+                            >
+                                <option value="">--Select--</option>
+                                <option value="motivation">motivation</option>
+                                <option value="stress">stress</option>
+                                <option value="competition">competition</option>
+                            </select>
+                            to encourage learners.
+                        </p>
+                        <button
+                            onClick={checkAnswers}
+                            className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-700"
+                        >
+                            Submit
+                        </button>
+                        {completed.fillInBlank && (
+                            <p className="text-green-600 font-bold mt-4">✅ Sentence Complete!</p>
+                        )}
                     </div>
                 );
             };
@@ -108,10 +113,7 @@
                     <h1 className="text-4xl font-bold text-gray-800 mb-6">🎮 Gamification Learning Adventure</h1>
                     <p className="text-gray-600 mb-4">Your Score: {score}</p>
                     <div className="mb-8">
-                        <HistoricalTimelineChallenge />
-                    </div>
-                    <div>
-                        {completed.timeline && <p className="text-green-600 font-bold">✅ Timeline Challenge Complete!</p>}
+                        <FillInTheBlanksChallenge />
                     </div>
                 </div>
             );
