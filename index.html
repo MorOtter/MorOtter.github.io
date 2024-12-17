@@ -32,6 +32,16 @@
         .dragging {
             opacity: 0.5;
         }
+
+        .aesthetic-choice {
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .aesthetic-choice:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 
@@ -46,15 +56,78 @@
             const [completed, setCompleted] = useState({
                 timeline: false,
                 definition: false,
+                aesthetics: false,
+                decoder: false,
             });
 
-            const HistoricalTimelineChallenge = () => {
-                const [milestones, setMilestones] = useState([
-                    { id: 'education', text: '📚 First educational gamification studies', correctIndex: 2, correct: false },
-                    { id: 'term_coined', text: '💡 Term "Gamification" coined by Nick Pelling', correctIndex: 1, correct: false },
-                    { id: 'widespread', text: '🌐 Widespread adoption in corporate training', correctIndex: 3, correct: false },
-                    { id: 'video_games', text: '🎮 Video game concept of points/levels', correctIndex: 0, correct: false },
-                ]);
+            // Aesthetic Choices Challenge
+            const AestheticChoicesChallenge = () => {
+                const options = [
+                    { id: 'minimalism', text: 'Minimalist Design', correct: true },
+                    { id: 'clutter', text: 'Cluttered Layout', correct: false },
+                    { id: 'high_contrast', text: 'High Contrast Colors', correct: true },
+                    { id: 'random_theme', text: 'Random Themes', correct: false },
+                ];
+
+                const [selected, setSelected] = useState([]);
+
+                const toggleSelection = (id) => {
+                    setSelected((prev) =>
+                        prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+                    );
+                };
+
+                const checkChoices = () => {
+                    const correctChoices = options.filter((opt) => opt.correct).map((opt) => opt.id);
+                    const isCorrect = correctChoices.every((id) => selected.includes(id)) &&
+                        selected.length === correctChoices.length;
+
+                    if (isCorrect) {
+                        setScore((prev) => prev + 100);
+                        setCompleted((prev) => ({ ...prev, aesthetics: true }));
+                        Swal.fire('Great!', 'You made the right aesthetic choices!', 'success');
+                    } else {
+                        Swal.fire('Oops!', 'Some choices are incorrect. Try again!', 'error');
+                    }
+                };
+
+                return (
+                    <div className="p-6 bg-green-50 rounded-lg shadow-lg">
+                        <h3 className="text-2xl font-bold mb-4 text-green-700">🎨 Aesthetic Choices</h3>
+                        <p className="mb-4">Select the design principles that enhance learning:</p>
+                        <div className="grid grid-cols-2 gap-4">
+                            {options.map((opt) => (
+                                <div
+                                    key={opt.id}
+                                    className={`aesthetic-choice p-4 rounded-lg border-2 ${
+                                        selected.includes(opt.id) ? 'border-green-500' : 'border-gray-300'
+                                    }`}
+                                    onClick={() => toggleSelection(opt.id)}
+                                >
+                                    {opt.text}
+                                </div>
+                            ))}
+                        </div>
+                        <button
+                            onClick={checkChoices}
+                            className="mt-4 w-full bg-gradient-to-r from-green-400 to-blue-500 text-white p-2 rounded hover:from-green-500 hover:to-blue-600"
+                        >
+                            Submit Choices
+                        </button>
+                    </div>
+                );
+            };
+
+            // Gamification Decoder Challenge
+            const GamificationElementsDecoder = () => {
+                const matchings = [
+                    { gameElement: '🏆 Points', learningTransformation: 'Motivation tracking' },
+                    { gameElement: '📈 Levels', learningTransformation: 'Progress visualization' },
+                    { gameElement: '🎖️ Badges', learningTransformation: 'Achievement recognition' },
+                    { gameElement: '🏅 Leaderboards', learningTransformation: 'Competitive learning' },
+                ];
+
+                const [matches, setMatches] = useState(matchings.map((m) => ({ ...m, matched: false })));
                 const [draggedItem, setDraggedItem] = useState(null);
 
                 const handleDragStart = (e, item) => {
@@ -73,142 +146,86 @@
                 const handleDrop = (e, targetItem) => {
                     if (!draggedItem) return;
 
-                    const updatedMilestones = milestones.map((m, index) => {
-                        if (index === targetItem.correctIndex) {
-                            return {
-                                ...m,
-                                correct: m.id === draggedItem.id,
-                            };
-                        }
-                        return m;
-                    });
+                    const updatedMatches = matches.map((m) =>
+                        m.learningTransformation === targetItem.learningTransformation
+                            ? { ...m, matched: m.gameElement === draggedItem.gameElement }
+                            : m
+                    );
 
-                    setMilestones(updatedMilestones);
-                };
+                    setMatches(updatedMatches);
 
-                const checkOrder = () => {
-                    const correctOrder = ['video_games', 'term_coined', 'education', 'widespread'];
-                    const isCorrect = milestones.map(m => m.id).every((id, index) => id === correctOrder[index]);
-
-                    if (isCorrect) {
-                        setScore(prev => prev + 100);
-                        setCompleted(prev => ({ ...prev, timeline: true }));
-                        Swal.fire({
-                            title: 'Timeline Mastered!',
-                            text: 'You placed all milestones correctly!',
-                            icon: 'success',
-                            confirmButtonText: 'Great!'
-                        });
+                    const allMatched = updatedMatches.every((m) => m.matched);
+                    if (allMatched) {
+                        setScore((prev) => prev + 150);
+                        setCompleted((prev) => ({ ...prev, decoder: true }));
+                        Swal.fire(
+                            'Decoded!',
+                            'You matched all game elements to their learning transformations!',
+                            'success'
+                        );
                     }
                 };
 
                 return (
-                    <div className="p-6 bg-blue-50 rounded-lg shadow-lg">
-                        <h3 className="text-2xl font-bold mb-4 text-blue-700">🕰️ Time Travel Challenge</h3>
-                        <p className="mb-4">Drag milestones into the correct order:</p>
-                        <div>
-                            {milestones.map((milestone, index) => (
-                                <div
-                                    key={milestone.id}
-                                    className={`bg-white p-4 rounded shadow transform hover:scale-105 ${milestone.correct ? 'correct' : ''}`}
-                                    draggable
-                                    onDragStart={(e) => handleDragStart(e, milestone)}
-                                    onDragEnd={handleDragEnd}
-                                    onDragOver={handleDragOver}
-                                    onDrop={(e) => handleDrop(e, milestone)}
-                                >
-                                    {milestone.text}
-                                </div>
-                            ))}
-                        </div>
-                        <button
-                            onClick={checkOrder}
-                            className="mt-4 w-full bg-gradient-to-r from-blue-400 to-purple-500 text-white p-2 rounded hover:from-blue-500 hover:to-purple-600">
-                            Check Order
-                        </button>
-                    </div>
-                );
-            };
-
-            const FillInTheBlanks = () => {
-                const blanks = [
-                    { id: 1, text: "Gamification in", options: ["Learning", "Underwater basket weaving", "Gaming", "Adventures"], correct: "Learning", selected: "" },
-                    { id: 2, text: "is the integration of", options: ["Game", "Spoon juggling", "Entertainment", "Board"], correct: "Game", selected: "" },
-                    { id: 3, text: "mechanics, such as", options: ["Points", "Glitter explosions", "Rewards", "Tokens"], correct: "Points", selected: "" },
-                    { id: 4, text: "badges,", options: ["Leaderboards", "Penguin wrestling", "Rewards", "Levels"], correct: "Leaderboards", selected: "" },
-                    { id: 5, text: "and", options: ["Challenges", "Yodeling contests", "Goals", "Fun"], correct: "Challenges", selected: "" },
-                    { id: 6, text: "like", options: ["Education", "Unicorn riding", "Sports", "Adventures"], correct: "Education", selected: "" },
-                    { id: 7, text: "to enhance their", options: ["Motivation", "Donut consumption", "Advancement", "Teaching"], correct: "Motivation", selected: "" },
-                    { id: 8, text: "and", options: ["Participation", "Pillow fighting", "Rewards", "Engagement"], correct: "Participation", selected: "" }
-                ];
-
-                const [answers, setAnswers] = useState(blanks);
-
-                const handleChange = (id, value) => {
-                    const updated = answers.map(item => item.id === id ? { ...item, selected: value } : item);
-                    setAnswers(updated);
-                };
-
-                const checkAnswers = () => {
-                    const allCorrect = answers.every(item => item.selected === item.correct);
-                    if (allCorrect) {
-                        setScore(prev => prev + 200);
-                        setCompleted(prev => ({ ...prev, definition: true }));
-                        Swal.fire({
-                            title: 'Great Job!',
-                            text: 'You filled in the blanks correctly!',
-                            icon: 'success',
-                        });
-                    } else {
-                        Swal.fire('Oops!', 'Some answers are incorrect. Try again.', 'error');
-                    }
-                };
-
-                return (
-                    <div className="p-6 bg-yellow-50 rounded-lg">
-                        <h3 className="text-2xl mb-4">📝 Fill in the Blanks</h3>
-                        <p>
-                            Gamification in 
-                            {answers.map((item, index) => (
-                                <span key={item.id}>
-                                    {index !== 0 && ","} 
-                                    {item.text} 
-                                    <select
-                                        value={item.selected}
-                                        onChange={(e) => handleChange(item.id, e.target.value)}
-                                        className="border p-1 rounded"
+                    <div className="p-6 bg-purple-50 rounded-lg shadow-lg">
+                        <h3 className="text-2xl font-bold mb-4 text-purple-700">🧩 Gamification Decoder</h3>
+                        <p className="mb-4 text-gray-600">Match game elements to their learning transformations!</p>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                {matches.map((match, index) => (
+                                    <div
+                                        key={index}
+                                        className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg mb-4 draggable transform transition-all hover:scale-105"
+                                        draggable
+                                        onDragStart={(e) => handleDragStart(e, match)}
+                                        onDragEnd={handleDragEnd}
                                     >
-                                        <option value="">Select</option>
-                                        {item.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                                    </select>
-                                </span>
-                            ))}.
-                        </p>
-                        <button
-                            onClick={checkAnswers}
-                            className="mt-4 bg-gradient-to-r from-yellow-400 to-red-500 text-white p-2 rounded hover:from-yellow-500 hover:to-red-600">
-                            Check Answers
-                        </button>
+                                        {match.gameElement}
+                                    </div>
+                                ))}
+                            </div>
+                            <div>
+                                {matches.map((match, index) => (
+                                    <div
+                                        key={index}
+                                        className="bg-white p-4 rounded-lg mb-4 border-2 border-dashed border-gray-300"
+                                        onDragOver={handleDragOver}
+                                        onDrop={(e) => handleDrop(e, match)}
+                                    >
+                                        {match.learningTransformation}
+                                        {match.matched && <span className="ml-2">✅</span>}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 );
             };
 
             return (
-                <div className="game-container max-w-4xl mx-auto p-6">
-                    <h1 className="text-4xl font-bold text-center mb-8 text-indigo-700">Gamification Learning Adventure</h1>
-                    <div className="grid gap-6">
-                        <HistoricalTimelineChallenge />
-                        <FillInTheBlanks />
-                    </div>
-                    <div className="text-center mt-8">
-                        <h2 className="text-2xl font-semibold">Score: {score}</h2>
-                    </div>
-                </div>
-            );
-        };
+                <div className="game-container w-full max-w-6xl mx-auto p-8">
+                    <h1 className="text-4xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">
+                        Gamification Learning Adventure
+                    </h1>
 
-        ReactDOM.render(<GamificationLearningChallenge />, document.getElementById('root'));
-    </script>
-</body>
+                    <div className="grid md:grid-cols-2 gap-8 mb-8">
+                        <div className="challenge-card">
+                            <HistoricalTimelineChallenge />
+                        </div>
+                        <div className="challenge-card">
+                            <AestheticChoicesChallenge />
+                        </div>
+                    </div>
 
-</html>
+                    <div className="grid md:grid-cols-2 gap-8 mb-8">
+                        <div className="challenge-card">
+                            <FillInTheBlanks />
+                        </div>
+                        <div className="challenge-card">
+                            <GamificationElementsDecoder />
+                        </div>
+                    </div>
+
+                    <div className="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 className="text-2xl font-bold mb-4 text-center">🏆 Your Learning Quest</h3>
+                        <div className="w-full bg-gray-
