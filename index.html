@@ -32,16 +32,6 @@
         .dragging {
             opacity: 0.5;
         }
-
-        .aesthetic-choice {
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .aesthetic-choice:hover {
-            transform: scale(1.1);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-        }
     </style>
 </head>
 
@@ -56,64 +46,66 @@
             const [completed, setCompleted] = useState({
                 timeline: false,
                 definition: false,
-                aesthetics: false,
                 decoder: false,
             });
 
-            // Aesthetic Choices Challenge
-            const AestheticChoicesChallenge = () => {
-                const options = [
-                    { id: 'minimalism', text: 'Minimalist Design', correct: true },
-                    { id: 'clutter', text: 'Cluttered Layout', correct: false },
-                    { id: 'high_contrast', text: 'High Contrast Colors', correct: true },
-                    { id: 'random_theme', text: 'Random Themes', correct: false },
+            // Historical Timeline Challenge
+            const HistoricalTimelineChallenge = () => {
+                const events = [
+                    { id: 1, event: 'Invention of the Printing Press', year: 1440 },
+                    { id: 2, event: 'First Online Learning Platform', year: 1990 },
+                    { id: 3, event: 'Introduction of Gamification in Education', year: 2010 },
                 ];
 
-                const [selected, setSelected] = useState([]);
+                const [timeline, setTimeline] = useState([]);
 
-                const toggleSelection = (id) => {
-                    setSelected((prev) =>
-                        prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+                const handleDrop = (e, year) => {
+                    const eventId = e.dataTransfer.getData('eventId');
+                    const droppedEvent = events.find((event) => event.id === parseInt(eventId));
+
+                    if (droppedEvent && !timeline.find((item) => item.id === droppedEvent.id)) {
+                        setTimeline((prev) => [...prev, { ...droppedEvent, year }]);
+                    }
+
+                    const isComplete = events.every((event) =>
+                        timeline.some((item) => item.id === event.id && item.year === event.year)
                     );
-                };
 
-                const checkChoices = () => {
-                    const correctChoices = options.filter((opt) => opt.correct).map((opt) => opt.id);
-                    const isCorrect = correctChoices.every((id) => selected.includes(id)) &&
-                        selected.length === correctChoices.length;
-
-                    if (isCorrect) {
-                        setScore((prev) => prev + 100);
-                        setCompleted((prev) => ({ ...prev, aesthetics: true }));
-                        Swal.fire('Great!', 'You made the right aesthetic choices!', 'success');
-                    } else {
-                        Swal.fire('Oops!', 'Some choices are incorrect. Try again!', 'error');
+                    if (isComplete) {
+                        setScore((prev) => prev + 150);
+                        setCompleted((prev) => ({ ...prev, timeline: true }));
+                        Swal.fire('Correct!', 'You built the timeline correctly!', 'success');
                     }
                 };
 
                 return (
-                    <div className="p-6 bg-green-50 rounded-lg shadow-lg">
-                        <h3 className="text-2xl font-bold mb-4 text-green-700">🎨 Aesthetic Choices</h3>
-                        <p className="mb-4">Select the design principles that enhance learning:</p>
-                        <div className="grid grid-cols-2 gap-4">
-                            {options.map((opt) => (
+                    <div className="p-6 bg-yellow-50 rounded-lg shadow-lg">
+                        <h3 className="text-2xl font-bold mb-4 text-yellow-700">📜 Historical Timeline</h3>
+                        <p className="mb-4">Drag events to the correct year in history:</p>
+                        <div className="flex flex-wrap gap-4">
+                            {events.map((event) => (
                                 <div
-                                    key={opt.id}
-                                    className={`aesthetic-choice p-4 rounded-lg border-2 ${
-                                        selected.includes(opt.id) ? 'border-green-500' : 'border-gray-300'
-                                    }`}
-                                    onClick={() => toggleSelection(opt.id)}
+                                    key={event.id}
+                                    className="bg-blue-100 text-blue-700 p-2 rounded-lg draggable"
+                                    draggable
+                                    onDragStart={(e) => e.dataTransfer.setData('eventId', event.id)}
                                 >
-                                    {opt.text}
+                                    {event.event}
                                 </div>
                             ))}
                         </div>
-                        <button
-                            onClick={checkChoices}
-                            className="mt-4 w-full bg-gradient-to-r from-green-400 to-blue-500 text-white p-2 rounded hover:from-green-500 hover:to-blue-600"
-                        >
-                            Submit Choices
-                        </button>
+                        <div className="mt-4">
+                            {[1440, 1990, 2010].map((year) => (
+                                <div
+                                    key={year}
+                                    className="p-4 border-dashed border-2 border-gray-400 rounded-lg mb-4"
+                                    onDragOver={(e) => e.preventDefault()}
+                                    onDrop={(e) => handleDrop(e, year)}
+                                >
+                                    Year: {year}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 );
             };
@@ -210,10 +202,7 @@
 
                     <div className="grid md:grid-cols-2 gap-8 mb-8">
                         <div className="challenge-card">
-                            {/* Placeholder for HistoricalTimelineChallenge */}
-                        </div>
-                        <div className="challenge-card">
-                            <AestheticChoicesChallenge />
+                            <HistoricalTimelineChallenge />
                         </div>
                     </div>
 
