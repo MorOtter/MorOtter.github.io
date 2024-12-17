@@ -184,3 +184,31 @@
                                 </span>
                             ))}.
                         </p>
+                        <button
+                            onClick={checkAnswers}
+                            className="mt-4 bg-gradient-to-r from-yellow-400 to-red-500 text-white p-2 rounded hover:from-yellow-500 hover:to-red-600">
+                            Check Answers
+                        </button>
+                    </div>
+                );
+            };
+
+            return (
+                <div className="game-container max-w-4xl mx-auto p-6">
+                    <h1 className="text-4xl font-bold text-center mb-8 text-indigo-700">Gamification Learning Adventure</h1>
+                    <div className="grid gap-6">
+                        <HistoricalTimelineChallenge />
+                        <FillInTheBlanks />
+                    </div>
+                    <div className="text-center mt-8">
+                        <h2 className="text-2xl font-semibold">Score: {score}</h2>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<GamificationLearningChallenge />, document.getElementById('root'));
+    </script>
+</body>
+
+</html>
