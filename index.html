@@ -54,6 +54,7 @@
 
                 const [userAnswers, setUserAnswers] = useState({});
                 const [feedback, setFeedback] = useState({});
+                const [isAnswered, setIsAnswered] = useState(false);
 
                 const handleCheckAnswers = () => {
                     const newFeedback = {};
@@ -69,11 +70,18 @@
                     });
 
                     setFeedback(newFeedback);
+                    setIsAnswered(true); // Mark that the answers have been checked
 
                     if (allCorrect) {
                         setScore(prev => prev + 100);
                         setCompleted(prev => ({ ...prev, fillBlank: true }));
                         alert("Great job! You completed the Fill-in-the-Blank challenge!");
+                    }
+                };
+
+                const handleChange = (e, index) => {
+                    if (!isAnswered) {
+                        setUserAnswers(prevState => ({ ...prevState, [index]: e.target.value }));
                     }
                 };
 
@@ -83,8 +91,10 @@
                         <p>
                             Gamification in&nbsp;
                             <select
-                                onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 1: e.target.value }))}
-                                className={feedback[1]}
+                                onChange={(e) => handleChange(e, 1)}
+                                value={isAnswered ? correctAnswers[1] : userAnswers[1] || ""}
+                                className={feedback[1] || ""}
+                                disabled={isAnswered}
                             >
                                 <option value="">--Select--</option>
                                 {options[1].map((opt, index) => (
@@ -93,8 +103,10 @@
                             </select>
                             &nbsp;is the integration of&nbsp;
                             <select
-                                onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 2: e.target.value }))}
-                                className={feedback[2]}
+                                onChange={(e) => handleChange(e, 2)}
+                                value={isAnswered ? correctAnswers[2] : userAnswers[2] || ""}
+                                className={feedback[2] || ""}
+                                disabled={isAnswered}
                             >
                                 <option value="">--Select--</option>
                                 {options[2].map((opt, index) => (
@@ -103,8 +115,10 @@
                             </select>
                             mechanics, such as&nbsp;
                             <select
-                                onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 3: e.target.value }))}
-                                className={feedback[3]}
+                                onChange={(e) => handleChange(e, 3)}
+                                value={isAnswered ? correctAnswers[3] : userAnswers[3] || ""}
+                                className={feedback[3] || ""}
+                                disabled={isAnswered}
                             >
                                 <option value="">--Select--</option>
                                 {options[3].map((opt, index) => (
@@ -113,8 +127,10 @@
                             </select>,
                             badges,&nbsp;
                             <select
-                                onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 4: e.target.value }))}
-                                className={feedback[4]}
+                                onChange={(e) => handleChange(e, 4)}
+                                value={isAnswered ? correctAnswers[4] : userAnswers[4] || ""}
+                                className={feedback[4] || ""}
+                                disabled={isAnswered}
                             >
                                 <option value="">--Select--</option>
                                 {options[4].map((opt, index) => (
@@ -123,8 +139,10 @@
                             </select>,
                             and&nbsp;
                             <select
-                                onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 5: e.target.value }))}
-                                className={feedback[5]}
+                                onChange={(e) => handleChange(e, 5)}
+                                value={isAnswered ? correctAnswers[5] : userAnswers[5] || ""}
+                                className={feedback[5] || ""}
+                                disabled={isAnswered}
                             >
                                 <option value="">--Select--</option>
                                 {options[5].map((opt, index) => (
@@ -132,8 +150,10 @@
                                 ))}
                             </select>, like&nbsp;
                             <select
-                                onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 6: e.target.value }))}
-                                className={feedback[6]}
+                                onChange={(e) => handleChange(e, 6)}
+                                value={isAnswered ? correctAnswers[6] : userAnswers[6] || ""}
+                                className={feedback[6] || ""}
+                                disabled={isAnswered}
                             >
                                 <option value="">--Select--</option>
                                 {options[6].map((opt, index) => (
@@ -142,8 +162,10 @@
                             </select>
                             &nbsp;to engage learners and enhance their&nbsp;
                             <select
-                                onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 7: e.target.value }))}
-                                className={feedback[7]}
+                                onChange={(e) => handleChange(e, 7)}
+                                value={isAnswered ? correctAnswers[7] : userAnswers[7] || ""}
+                                className={feedback[7] || ""}
+                                disabled={isAnswered}
                             >
                                 <option value="">--Select--</option>
                                 {options[7].map((opt, index) => (
@@ -152,8 +174,10 @@
                             </select>
                             and&nbsp;
                             <select
-                                onChange={(e) => setUserAnswers((prevState) => ({ ...prevState, 8: e.target.value }))}
-                                className={feedback[8]}
+                                onChange={(e) => handleChange(e, 8)}
+                                value={isAnswered ? correctAnswers[8] : userAnswers[8] || ""}
+                                className={feedback[8] || ""}
+                                disabled={isAnswered}
                             >
                                 <option value="">--Select--</option>
                                 {options[8].map((opt, index) => (
