@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,44 +9,40 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-            font-family: 'Comfortaa', cursive;
+            font-family: 'Arial', sans-serif;
         }
-
         .game-container {
             background: rgba(255, 255, 255, 0.9);
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
+            padding: 20px;
         }
-
         .correct {
             background-color: #d4edda;
             color: #155724;
         }
-
         .incorrect {
             background-color: #f8d7da;
             color: #721c24;
         }
     </style>
 </head>
-
 <body>
     <div id="root" class="min-h-screen flex items-center justify-center p-4"></div>
 
     <script type="text/babel">
         const { useState } = React;
 
-        const GamificationLearningChallenge = () => {
+        const GamificationLearningAdventure = () => {
             const [score, setScore] = useState(0);
             const [completed, setCompleted] = useState({
                 timeline: false,
                 decoder: false,
-                definition: false
+                blanks: false
             });
 
             const HistoricalTimelineChallenge = () => {
@@ -57,6 +52,7 @@
                     { id: 'education', text: '📚 First educational gamification studies' },
                     { id: 'widespread', text: '🌐 Widespread adoption in corporate training' }
                 ]);
+
                 const [draggedItem, setDraggedItem] = useState(null);
 
                 const handleDragStart = (e, item) => {
@@ -74,9 +70,11 @@
 
                 const handleDrop = (e, targetItem) => {
                     if (!draggedItem) return;
+
                     const newMilestones = milestones.map(m =>
                         m.id === targetItem.id ? draggedItem : m.id === draggedItem.id ? targetItem : m
                     );
+
                     setMilestones(newMilestones);
                 };
 
@@ -86,24 +84,21 @@
                     if (isCorrect) {
                         setScore(prev => prev + 100);
                         setCompleted(prev => ({ ...prev, timeline: true }));
-                        Swal.fire({
-                            title: 'Timeline Mastered!',
-                            text: 'You placed all milestones correctly!',
-                            icon: 'success',
-                            confirmButtonText: 'Great!'
-                        });
+                        Swal.fire('Success!', 'You ordered the timeline correctly!', 'success');
+                    } else {
+                        Swal.fire('Incorrect', 'The order is not correct. Try again!', 'error');
                     }
                 };
 
                 return (
                     <div className="p-6 bg-blue-50 rounded-lg shadow-lg">
-                        <h3 className="text-2xl font-bold mb-4 text-blue-700">🕰️ Time Travel Challenge</h3>
-                        <p className="mb-4">Drag milestones into the correct order:</p>
+                        <h3 className="text-2xl font-bold mb-4">🕰️ Historical Timeline Challenge</h3>
+                        <p className="mb-4">Drag milestones into the correct chronological order:</p>
                         <div>
-                            {milestones.map((milestone) => (
+                            {milestones.map(milestone => (
                                 <div
                                     key={milestone.id}
-                                    className="bg-white p-4 rounded shadow transform hover:scale-105"
+                                    className="bg-white p-4 rounded shadow mb-2"
                                     draggable
                                     onDragStart={(e) => handleDragStart(e, milestone)}
                                     onDragEnd={handleDragEnd}
@@ -116,7 +111,7 @@
                         </div>
                         <button
                             onClick={checkOrder}
-                            className="mt-4 w-full bg-gradient-to-r from-blue-400 to-purple-500 text-white p-2 rounded hover:from-blue-500 hover:to-purple-600">
+                            className="mt-4 bg-green-500 text-white p-2 rounded">
                             Check Order
                         </button>
                     </div>
@@ -125,14 +120,14 @@
 
             const FillInTheBlanks = () => {
                 const blanks = [
-                    { id: 1, text: "Gamification in", options: ["Learning", "Gaming", "Sports"], correct: "Learning", selected: "" },
-                    { id: 2, text: "is the integration of", options: ["Game", "Tools", "Art"], correct: "Game", selected: "" },
-                    { id: 3, text: "mechanics, such as", options: ["Points", "Tasks", "Levels"], correct: "Points", selected: "" },
-                    { id: 4, text: "badges,", options: ["Leaderboards", "Challenges", "Rewards"], correct: "Leaderboards", selected: "" },
-                    { id: 5, text: "and", options: ["Challenges", "Achievements", "Scores"], correct: "Challenges", selected: "" },
-                    { id: 6, text: "like", options: ["Education", "Sports", "Play"], correct: "Education", selected: "" },
-                    { id: 7, text: "to enhance their", options: ["Motivation", "Focus", "Engagement"], correct: "Motivation", selected: "" },
-                    { id: 8, text: "and", options: ["Participation", "Improvement", "Performance"], correct: "Participation", selected: "" }
+                    { id: 1, text: "Gamification in", options: ["Learning", "Underwater basket weaving", "Gaming", "Adventures"], correct: "Learning", selected: "" },
+                    { id: 2, text: "The integration of", options: ["Game", "Spoon juggling", "Entertainment", "Board"], correct: "Game", selected: "" },
+                    { id: 3, text: "Such as", options: ["Points", "Glitter explosions", "Rewards", "Tokens"], correct: "Points", selected: "" },
+                    { id: 4, text: "Badges,", options: ["Leaderboards", "Penguin wrestling", "Rewards", "Levels"], correct: "Leaderboards", selected: "" },
+                    { id: 5, text: "And", options: ["Challenges", "Yodeling contests", "Goals", "Fun"], correct: "Challenges", selected: "" },
+                    { id: 6, text: "Like", options: ["Education", "Unicorn riding", "Sports", "Adventures"], correct: "Education", selected: "" },
+                    { id: 7, text: "Enhance their", options: ["Motivation", "Donut consumption", "Advancement", "Teaching"], correct: "Motivation", selected: "" },
+                    { id: 8, text: "And", options: ["Participation", "Pillow fighting", "Rewards", "Engagement"], correct: "Participation", selected: "" }
                 ];
 
                 const [answers, setAnswers] = useState(blanks);
@@ -145,13 +140,9 @@
                 const checkAnswers = () => {
                     const allCorrect = answers.every(item => item.selected === item.correct);
                     if (allCorrect) {
-                        setScore(prev => prev + 200);
-                        setCompleted(prev => ({ ...prev, definition: true }));
-                        Swal.fire({
-                            title: 'Great Job!',
-                            text: 'You filled in the blanks correctly!',
-                            icon: 'success',
-                        });
+                        setScore(prev => prev + 150);
+                        setCompleted(prev => ({ ...prev, blanks: true }));
+                        Swal.fire('Great Job!', 'You filled in the blanks correctly!', 'success');
                     } else {
                         Swal.fire('Oops!', 'Some answers are incorrect. Try again.', 'error');
                     }
@@ -159,30 +150,35 @@
 
                 return (
                     <div className="p-6 bg-yellow-50 rounded-lg">
-                        <h3 className="text-2xl mb-4">📝 Fill in the Blanks</h3>
+                        <h3 className="text-2xl font-bold mb-4">📝 Fill in the Blanks</h3>
                         <p>
                             {answers.map(item => (
                                 <span key={item.id}>
-                                    {item.text} 
-                                    <select value={item.selected} onChange={(e) => handleChange(item.id, e.target.value)} className="border p-1 rounded">
+                                    {item.text}{" "}
+                                    <select
+                                        value={item.selected}
+                                        onChange={(e) => handleChange(item.id, e.target.value)}
+                                        className="border p-1 rounded">
                                         <option value="">Select</option>
                                         {item.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                                    </select>
+                                    </select>{" "}
                                 </span>
                             ))}
                         </p>
-                        <button onClick={checkAnswers} className="mt-4 bg-yellow-500 p-2 rounded text-white">Submit</button>
+                        <button
+                            onClick={checkAnswers}
+                            className="mt-4 bg-yellow-500 text-white p-2 rounded">
+                            Submit
+                        </button>
                     </div>
                 );
             };
 
             return (
-                <div className="game-container p-8">
-                    <h1 className="text-4xl text-center mb-8">Gamification Learning Adventure</h1>
-                    <div className="space-y-8">
-                        <HistoricalTimelineChallenge />
-                        <FillInTheBlanks />
-                    </div>
+                <div className="game-container">
+                    <h1 className="text-4xl font-bold text-center mb-8">Gamification Learning Adventure</h1>
+                    <HistoricalTimelineChallenge />
+                    <FillInTheBlanks />
                     <div className="mt-8 text-center">
                         <p className="text-xl font-bold">Score: {score}</p>
                     </div>
@@ -190,7 +186,7 @@
             );
         };
 
-        ReactDOM.render(<GamificationLearningChallenge />, document.getElementById('root'));
+        ReactDOM.render(<GamificationLearningAdventure />, document.getElementById('root'));
     </script>
 </body>
 </html>
