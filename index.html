@@ -194,10 +194,10 @@
 
             const DragAndDropTask = () => {
     const initialMilestones = [
-        { id: 1, text: "1970s: Introduction of video games" },
-        { id: 2, text: "1980s: Rise of educational games" },
-        { id: 3, text: "1990s: Gamification gains popularity" },
-        { id: 4, text: "2000s: Gamification in corporate training" },
+        { id: 1, text: "Researchers like McGonigal and Deterding perform academic research on gamification" },
+        { id: 2, text: "Gamification in learning is seen across various enviroments"},
+        { id: 3, text: "The term Gamification is coined to refer to application of game-design elements in non-game contexts." },
+        { id: 4, text: "Civilisations worldwide independently develop games" },
     ];
 
     const [milestones, setMilestones] = useState(initialMilestones);
@@ -205,7 +205,7 @@
     const [completed, setCompletedTask] = useState(false);
     const [showCongratsMessage, setShowCongratsMessage] = useState(false);
 
-    const correctOrder = [1, 2, 3, 4];
+    const correctOrder = [4, 3, 1, 2];
 
     const handleDrop = (event, targetIndex) => {
         const draggedId = parseInt(event.dataTransfer.getData("text/plain"));
