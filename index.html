@@ -193,84 +193,93 @@
             };
 
             const DragAndDropTask = () => {
-                const initialMilestones = [
-                    { id: 1, text: "1970s: Introduction of video games" },
-                    { id: 2, text: "1980s: Rise of educational games" },
-                    { id: 3, text: "1990s: Gamification gains popularity" },
-                    { id: 4, text: "2000s: Gamification in corporate training" },
-                ];
+    const initialMilestones = [
+        { id: 1, text: "1970s: Introduction of video games" },
+        { id: 2, text: "1980s: Rise of educational games" },
+        { id: 3, text: "1990s: Gamification gains popularity" },
+        { id: 4, text: "2000s: Gamification in corporate training" },
+    ];
 
-                const [milestones, setMilestones] = useState(initialMilestones);
-                const [feedback, setFeedback] = useState("");
-                const [completed, setCompletedTask] = useState(false);
+    const [milestones, setMilestones] = useState(initialMilestones);
+    const [feedback, setFeedback] = useState("");
+    const [completed, setCompletedTask] = useState(false);
+    const [showCongratsMessage, setShowCongratsMessage] = useState(false);
 
-                const correctOrder = [1, 2, 3, 4];
+    const correctOrder = [1, 2, 3, 4];
 
-                const handleDrop = (event, targetIndex) => {
-                    const draggedId = parseInt(event.dataTransfer.getData("text/plain"));
-                    const draggedMilestone = milestones.find(m => m.id === draggedId);
+    const handleDrop = (event, targetIndex) => {
+        const draggedId = parseInt(event.dataTransfer.getData("text/plain"));
+        const draggedMilestone = milestones.find(m => m.id === draggedId);
 
-                    const updatedMilestones = [...milestones];
-                    updatedMilestones.splice(
-                        updatedMilestones.findIndex(m => m.id === draggedId),
-                        1
-                    );
-                    updatedMilestones.splice(targetIndex, 0, draggedMilestone);
+        const updatedMilestones = [...milestones];
+        updatedMilestones.splice(
+            updatedMilestones.findIndex(m => m.id === draggedId),
+            1
+        );
+        updatedMilestones.splice(targetIndex, 0, draggedMilestone);
 
-                    setMilestones(updatedMilestones);
-                };
+        setMilestones(updatedMilestones);
+    };
 
-                const handleDragStart = (event, id) => {
-                    event.dataTransfer.setData("text/plain", id);
-                };
+    const handleDragStart = (event, id) => {
+        event.dataTransfer.setData("text/plain", id);
+    };
 
-                const handleCheckOrder = () => {
-                    const isCorrect = milestones.every(
-                        (milestone, index) => milestone.id === correctOrder[index]
-                    );
+    const handleCheckOrder = () => {
+        const isCorrect = milestones.every(
+            (milestone, index) => milestone.id === correctOrder[index]
+        );
 
-                    if (isCorrect) {
-                        setFeedback("Correct! The timeline is now in the right order.");
-                        setCompletedTask(true);
-                        setScore(prev => prev + 100);
-                    } else {
-                        setFeedback("The order is incorrect. Try again!");
-                    }
-                };
+        if (isCorrect) {
+            setFeedback("Correct! The timeline is now in the right order.");
+            setCompletedTask(true);
+            setScore(prev => prev + 100);
+            setShowCongratsMessage(true); // Show the congratulations message
+        } else {
+            setFeedback("The order is incorrect. Try again!");
+        }
+    };
 
-                return (
-                    <div className="p-4 bg-yellow-50 rounded mb-6">
-                        <h3 className="font-bold mb-2">Historical Timeline Challenge</h3>
-                        <p className="text-gray-600 mb-2">Drag the milestones into the correct order:</p>
-                        <div>
-                            {milestones.map((milestone, index) => (
-                                <div
-                                    key={milestone.id}
-                                    draggable={!completed}
-                                    onDragStart={(event) => handleDragStart(event, milestone.id)}
-                                    onDragOver={(event) => event.preventDefault()}
-                                    onDrop={(event) => handleDrop(event, index)}
-                                    className="drag-item drop-zone"
-                                >
-                                    {milestone.text}
-                                </div>
-                            ))}
-                        </div>
-                        <button
-                            onClick={handleCheckOrder}
-                            className="mt-4 bg-blue-500 text-white p-2 rounded"
-                            disabled={completed}
-                        >
-                            Check Order
-                        </button>
-                        {feedback && (
-                            <p className={`mt-2 p-2 rounded ${completed ? "bg-green-100" : "bg-red-100"}`}>
-                                {feedback}
-                            </p>
-                        )}
+    return (
+        <div className="p-4 bg-yellow-50 rounded mb-6">
+            <h3 className="font-bold mb-2">Historical Timeline Challenge</h3>
+            <p className="text-gray-600 mb-2">Drag the milestones into the correct order:</p>
+            <div>
+                {milestones.map((milestone, index) => (
+                    <div
+                        key={milestone.id}
+                        draggable={!completed}
+                        onDragStart={(event) => handleDragStart(event, milestone.id)}
+                        onDragOver={(event) => event.preventDefault()}
+                        onDrop={(event) => handleDrop(event, index)}
+                        className="drag-item drop-zone"
+                    >
+                        {milestone.text}
                     </div>
-                );
-            };
+                ))}
+            </div>
+            <button
+                onClick={handleCheckOrder}
+                className="mt-4 bg-blue-500 text-white p-2 rounded"
+                disabled={completed}
+            >
+                Check Order
+            </button>
+            {feedback && (
+                <p className={`mt-2 p-2 rounded ${completed ? "bg-green-100" : "bg-red-100"}`}>
+                    {feedback}
+                </p>
+            )}
+            {showCongratsMessage && (
+                <div className="mt-4 bg-green-200 p-3 rounded">
+                    <p className="text-green-800 font-bold">
+                        🎉 Congratulations! You've successfully ordered all the milestones correctly! Great job! 🎉
+                    </p>
+                </div>
+            )}
+        </div>
+    );
+};
 
             return (
                 <div className="bg-gray-100 p-6 rounded-lg max-w-4xl mx-auto">
