@@ -226,20 +226,23 @@
     };
 
     const handleCheckOrder = () => {
-    const isCorrect = milestones.every(
-        (milestone, index) => milestone.id === correctOrder[index]
-    );
+        console.log("Milestones Order:", milestones.map(m => m.id));
+        console.log("Expected Order:", correctOrder);
 
-    if (isCorrect) {
-        setFeedback("Correct! The timeline is now in the right order.");
-        setCompletedTask(true);
-        setScore(prev => prev + 100);
-        setShowCongratsMessage(true);
-        setCompleted(prev => ({ ...prev, timeline: true })); // Update the parent's completed state
-    } else {
-        setFeedback("The order is incorrect. Try again!");
-    }
-};
+        const isCorrect = milestones.every(
+            (milestone, index) => milestone.id === correctOrder[index]
+        );
+
+        if (isCorrect) {
+            console.log("Setting Congratulations Message");
+            setFeedback("Correct! The timeline is now in the right order.");
+            setCompletedTask(true);
+            setShowCongratsMessage(true); // Show the congratulations message
+        } else {
+            setFeedback("The order is incorrect. Try again!");
+        }
+    };
+
     return (
         <div className="p-4 bg-yellow-50 rounded mb-6">
             <h3 className="font-bold mb-2">Historical Timeline Challenge</h3>
