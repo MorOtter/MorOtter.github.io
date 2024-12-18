@@ -207,80 +207,93 @@
 
             // --- Historical Timeline Task ---
             const HistoricalTimelineTask = () => {
-                const [milestones, setMilestones] = useState([
-                    { id: 1, text: "Video game concept of points/levels" },
-                    { id: 2, text: "Term 'Gamification' coined by Nick Pelling" },
-                    { id: 3, text: "First educational gamification studies" },
-                    { id: 4, text: "Widespread adoption in corporate training" }
-                ]);
+    const milestoneDetails = [
+        { id: 1, text: "Video game concept of points/levels", year: "1970s" },
+        { id: 2, text: "Term 'Gamification' coined by Nick Pelling", year: "2002" },
+        { id: 3, text: "First educational gamification studies", year: "2010" },
+        { id: 4, text: "Widespread adoption in corporate training", year: "2012-2015" }
+    ];
 
-                // Shuffle the milestones array
-                useEffect(() => {
-                    const shuffledMilestones = [...milestones].sort(() => Math.random() - 0.5);
-                    setMilestones(shuffledMilestones);
-                }, []);
+    const [milestones, setMilestones] = useState([...milestoneDetails].sort(() => Math.random() - 0.5));
+    const [draggedItem, setDraggedItem] = useState(null);
+    const [isCorrectOrder, setIsCorrectOrder] = useState(false);
+    const [showFullTimeline, setShowFullTimeline] = useState(false);
 
-                const [draggedItem, setDraggedItem] = useState(null);
+    const handleDragStart = (e, item) => {
+        if (!isCorrectOrder) {
+            setDraggedItem(item);
+        }
+    };
 
-                const handleDragStart = (e, item) => {
-                    setDraggedItem(item);
-                };
+    const handleDrop = (e, targetItem) => {
+        if (!draggedItem || isCorrectOrder) return;
+        const newMilestones = milestones.map(m =>
+            m.id === targetItem.id ? draggedItem :
+            m.id === draggedItem.id ? targetItem : m
+        );
+        setMilestones(newMilestones);
+        setDraggedItem(null);
+    };
 
-                const handleDrop = (e, targetItem) => {
-                    if (!draggedItem) return;
-                    const newMilestones = milestones.map(m =>
-                        m.id === targetItem.id ? draggedItem :
-                        m.id === draggedItem.id ? targetItem : m
-                    );
-                    setMilestones(newMilestones);
-                    setDraggedItem(null);
-                };
+    const checkOrder = () => {
+        const currentOrder = milestones.map(m => m.id);
+        const correctOrder = [1, 2, 3, 4];
+        const isCorrect = currentOrder.every((id, index) => id === correctOrder[index]);
+        
+        if (isCorrect) {
+            setScore(prev => prev + 100);
+            setCompleted(prev => ({ ...prev, timeline: true }));
+            setIsCorrectOrder(true);
+            setShowFullTimeline(true);
+            alert("Well done! You ordered the timeline correctly.");
+        } else {
+            alert("Try again! The order is incorrect.");
+        }
+    };
 
-                const checkOrder = () => {
-                    const correctOrder = [1, 2, 3, 4];
-                    const isCorrect = milestones.map(m => m.id).every((id, index) => id === correctOrder[index]);
-                    if (isCorrect) {
-                        setScore(prev => prev + 100);
-                        setCompleted(prev => ({ ...prev, timeline: true }));
-                    }
-                };
-
-                return (
-                    <div className="p-4 bg-yellow-50 rounded mb-6">
-                        <h3 className="font-bold mb-2">Historical Timeline Challenge</h3>
-                        <p className="text-gray-600 mb-2">Drag the milestones into the correct order:</p>
-                        <div>
-                            {milestones.map((milestone, index) => (
-                                <div
-                                    key={milestone.id}
-                                    draggable
-                                    onDragStart={(e) => handleDragStart(e, milestone)}
-                                    onDragOver={(e) => e.preventDefault()}
-                                    onDrop={(e) => handleDrop(e, milestone)}
-                                    className="bg-white p-2 mb-2 shadow rounded draggable"
-                                >
-                                    {index + 1}. {milestone.text}
-                                </div>
-                            ))}
-                        </div>
-                        <button onClick={checkOrder} className="mt-4 bg-blue-500 text-white p-2 rounded">
-                            Check Timeline
-                        </button>
+    return (
+        <div className="p-4 bg-yellow-50 rounded mb-6">
+            <h3 className="font-bold mb-2">Historical Timeline Challenge</h3>
+            {!showFullTimeline ? (
+                <>
+                    <p className="text-gray-600 mb-2">Drag the milestones into the correct order:</p>
+                    <div>
+                        {milestones.map((milestone, index) => (
+                            <div
+                                key={milestone.id}
+                                draggable={!isCorrectOrder}
+                                onDragStart={(e) => handleDragStart(e, milestone)}
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={(e) => handleDrop(e, milestone)}
+                                className={`
+                                    bg-white p-2 mb-2 shadow rounded 
+                                    ${isCorrectOrder && milestone.id === index + 1 ? 'bg-green-100' : ''}
+                                    ${!isCorrectOrder ? 'draggable' : 'cursor-default'}
+                                `}
+                            >
+                                {index + 1}. {milestone.text}
+                            </div>
+                        ))}
                     </div>
-                );
-            };
-
-            return (
-                <div className="bg-gray-100 p-6 rounded-lg max-w-4xl mx-auto">
-                    <h2 className="text-2xl font-bold mb-4">Gamification Learning Quest</h2>
-                    <FillInTheBlankTask />
-                    <HistoricalTimelineTask />
-                    <p className="italic text-gray-500">(Source: Kapp, K. M. (2012). The Gamification of Learning and Instruction)</p>
+                </>
+            ) : (
+                <div className="bg-green-100 p-3 rounded">
+                    <h4 className="font-bold mb-2">Complete Gamification Timeline</h4>
+                    {milestoneDetails.map((milestone) => (
+                        <div key={milestone.id} className="mb-2">
+                            <strong>{milestone.year}</strong>: {milestone.text}
+                        </div>
+                    ))}
                 </div>
-            );
-        };
-
-        ReactDOM.render(<GamificationLearningQuest />, document.getElementById('root'));
-    </script>
-</body>
-</html>
+            )}
+            {!isCorrectOrder && (
+                <button 
+                    onClick={checkOrder} 
+                    className="mt-4 bg-blue-500 text-white p-2 rounded"
+                >
+                    Check Timeline
+                </button>
+            )}
+        </div>
+    );
+};
