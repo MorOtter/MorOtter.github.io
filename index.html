@@ -12,6 +12,8 @@
         .correct { background-color: #d4edda; }
         .incorrect { background-color: #f8d7da; }
         .locked { pointer-events: none; opacity: 0.7; }
+        .drag-item { padding: 8px; background-color: #f3f4f6; border: 1px solid #d1d5db; margin-bottom: 8px; cursor: grab; }
+        .drop-zone { padding: 12px; border: 2px dashed #9ca3af; margin-bottom: 12px; }
     </style>
 </head>
 <body>
@@ -29,14 +31,13 @@
 
             const FillInTheBlankTask = () => {
                 const options = {
-                    1: ["Learning", "Underwater basket weaving", "Gaming", "Adventures"],
-                    2: ["Game", "Spoon juggling", "Entertainment", "Board"],
-                    3: ["Points", "Glitter explosions", "Rewards", "Tokens"],
-                    4: ["Leaderboards", "Penguin wrestling", "Rewards", "Levels"],
-                    5: ["Challenges", "Yodeling contests", "Goals", "Fun"],
-                    6: ["Education", "Unicorn riding", "Sports", "Adventures"],
-                    7: ["Motivation", "Donut consumption", "Advancement", "Teaching"],
-                    8: ["Participation", "Pillow fighting", "Rewards", "Engagement"]
+                    1: ["Learning", "Gaming", "Fun", "Education"],
+                    2: ["Game", "Entertainment", "Experience", "Adventure"],
+                    3: ["Points", "Tokens", "Badges", "Rewards"],
+                    4: ["Leaderboards", "Challenges", "Ranks", "Achievements"],
+                    5: ["Education", "Motivation", "Participation", "Learning"],
+                    6: ["Motivation", "Engagement", "Knowledge", "Success"],
+                    7: ["Participation", "Involvement", "Activity", "Interaction"]
                 };
 
                 const correctAnswers = {
@@ -44,10 +45,9 @@
                     2: "Game",
                     3: "Points",
                     4: "Leaderboards",
-                    5: "Challenges",
-                    6: "Education",
-                    7: "Motivation",
-                    8: "Participation"
+                    5: "Education",
+                    6: "Motivation",
+                    7: "Participation"
                 };
 
                 const [userAnswers, setUserAnswers] = useState({});
@@ -91,107 +91,92 @@
                     <div className="p-4 bg-blue-50 rounded mb-6">
                         <h3 className="font-bold mb-2">What does "Gamification in learning mean?"</h3>
                         {!showFullSentence ? (
-                            <React.Fragment>
-                                <p>
-                                    Gamification in&nbsp;
-                                    <select
-                                        onChange={(e) => handleChange(e, 1)}
-                                        value={userAnswers[1] || ""}
-                                        className={`${feedback[1] || ""} ${lockedAnswers[1] ? "locked" : ""}`}
-                                        disabled={lockedAnswers[1]}
-                                    >
-                                        <option value="">--Select--</option>
-                                        {options[1].map((opt, index) => (
-                                            <option key={index} value={opt}>{opt}</option>
-                                        ))}
-                                    </select>
-                                    &nbsp;is the integration of&nbsp;
-                                    <select
-                                        onChange={(e) => handleChange(e, 2)}
-                                        value={userAnswers[2] || ""}
-                                        className={`${feedback[2] || ""} ${lockedAnswers[2] ? "locked" : ""}`}
-                                        disabled={lockedAnswers[2]}
-                                    >
-                                        <option value="">--Select--</option>
-                                        {options[2].map((opt, index) => (
-                                            <option key={index} value={opt}>{opt}</option>
-                                        ))}
-                                    </select>
-                                    mechanics, such as&nbsp;
-                                    <select
-                                        onChange={(e) => handleChange(e, 3)}
-                                        value={userAnswers[3] || ""}
-                                        className={`${feedback[3] || ""} ${lockedAnswers[3] ? "locked" : ""}`}
-                                        disabled={lockedAnswers[3]}
-                                    >
-                                        <option value="">--Select--</option>
-                                        {options[3].map((opt, index) => (
-                                            <option key={index} value={opt}>{opt}</option>
-                                        ))}
-                                    </select>
-                                    , badges,&nbsp;
-                                    <select
-                                        onChange={(e) => handleChange(e, 4)}
-                                        value={userAnswers[4] || ""}
-                                        className={`${feedback[4] || ""} ${lockedAnswers[4] ? "locked" : ""}`}
-                                        disabled={lockedAnswers[4]}
-                                    >
-                                        <option value="">--Select--</option>
-                                        {options[4].map((opt, index) => (
-                                            <option key={index} value={opt}>{opt}</option>
-                                        ))}
-                                    </select>
-                                    , and&nbsp;
-                                    <select
-                                        onChange={(e) => handleChange(e, 5)}
-                                        value={userAnswers[5] || ""}
-                                        className={`${feedback[5] || ""} ${lockedAnswers[5] ? "locked" : ""}`}
-                                        disabled={lockedAnswers[5]}
-                                    >
-                                        <option value="">--Select--</option>
-                                        {options[5].map((opt, index) => (
-                                            <option key={index} value={opt}>{opt}</option>
-                                        ))}
-                                    </select>
-                                    , like&nbsp;
-                                    <select
-                                        onChange={(e) => handleChange(e, 6)}
-                                        value={userAnswers[6] || ""}
-                                        className={`${feedback[6] || ""} ${lockedAnswers[6] ? "locked" : ""}`}
-                                        disabled={lockedAnswers[6]}
-                                    >
-                                        <option value="">--Select--</option>
-                                        {options[6].map((opt, index) => (
-                                            <option key={index} value={opt}>{opt}</option>
-                                        ))}
-                                    </select>
-                                    &nbsp;to engage learners and enhance their&nbsp;
-                                    <select
-                                        onChange={(e) => handleChange(e, 7)}
-                                        value={userAnswers[7] || ""}
-                                        className={`${feedback[7] || ""} ${lockedAnswers[7] ? "locked" : ""}`}
-                                        disabled={lockedAnswers[7]}
-                                    >
-                                        <option value="">--Select--</option>
-                                        {options[7].map((opt, index) => (
-                                            <option key={index} value={opt}>{opt}</option>
-                                        ))}
-                                    </select>
-                                    &nbsp;and&nbsp;
-                                    <select
-                                        onChange={(e) => handleChange(e, 8)}
-                                        value={userAnswers[8] || ""}
-                                        className={`${feedback[8] || ""} ${lockedAnswers[8] ? "locked" : ""}`}
-                                        disabled={lockedAnswers[8]}
-                                    >
-                                        <option value="">--Select--</option>
-                                        {options[8].map((opt, index) => (
-                                            <option key={index} value={opt}>{opt}</option>
-                                        ))}
-                                    </select>
-                                    .
-                                </p>
-                            </React.Fragment>
+                            <p>
+                                Gamification in&nbsp;
+                                <select
+                                    onChange={(e) => handleChange(e, 1)}
+                                    value={userAnswers[1] || ""}
+                                    className={`${feedback[1] || ""} ${lockedAnswers[1] ? "locked" : ""}`}
+                                    disabled={lockedAnswers[1]}
+                                >
+                                    <option value="">--Select--</option>
+                                    {options[1].map((opt, index) => (
+                                        <option key={index} value={opt}>{opt}</option>
+                                    ))}
+                                </select>
+                                &nbsp;is the integration of&nbsp;
+                                <select
+                                    onChange={(e) => handleChange(e, 2)}
+                                    value={userAnswers[2] || ""}
+                                    className={`${feedback[2] || ""} ${lockedAnswers[2] ? "locked" : ""}`}
+                                    disabled={lockedAnswers[2]}
+                                >
+                                    <option value="">--Select--</option>
+                                    {options[2].map((opt, index) => (
+                                        <option key={index} value={opt}>{opt}</option>
+                                    ))}
+                                </select>
+                                mechanics, such as&nbsp;
+                                <select
+                                    onChange={(e) => handleChange(e, 3)}
+                                    value={userAnswers[3] || ""}
+                                    className={`${feedback[3] || ""} ${lockedAnswers[3] ? "locked" : ""}`}
+                                    disabled={lockedAnswers[3]}
+                                >
+                                    <option value="">--Select--</option>
+                                    {options[3].map((opt, index) => (
+                                        <option key={index} value={opt}>{opt}</option>
+                                    ))}
+                                </select>
+                                , badges,&nbsp;
+                                <select
+                                    onChange={(e) => handleChange(e, 4)}
+                                    value={userAnswers[4] || ""}
+                                    className={`${feedback[4] || ""} ${lockedAnswers[4] ? "locked" : ""}`}
+                                    disabled={lockedAnswers[4]}
+                                >
+                                    <option value="">--Select--</option>
+                                    {options[4].map((opt, index) => (
+                                        <option key={index} value={opt}>{opt}</option>
+                                    ))}
+                                </select>
+                                , and&nbsp;
+                                <select
+                                    onChange={(e) => handleChange(e, 5)}
+                                    value={userAnswers[5] || ""}
+                                    className={`${feedback[5] || ""} ${lockedAnswers[5] ? "locked" : ""}`}
+                                    disabled={lockedAnswers[5]}
+                                >
+                                    <option value="">--Select--</option>
+                                    {options[5].map((opt, index) => (
+                                        <option key={index} value={opt}>{opt}</option>
+                                    ))}
+                                </select>
+                                , like&nbsp;
+                                <select
+                                    onChange={(e) => handleChange(e, 6)}
+                                    value={userAnswers[6] || ""}
+                                    className={`${feedback[6] || ""} ${lockedAnswers[6] ? "locked" : ""}`}
+                                    disabled={lockedAnswers[6]}
+                                >
+                                    <option value="">--Select--</option>
+                                    {options[6].map((opt, index) => (
+                                        <option key={index} value={opt}>{opt}</option>
+                                    ))}
+                                </select>
+                                to engage learners and enhance their&nbsp;
+                                <select
+                                    onChange={(e) => handleChange(e, 7)}
+                                    value={userAnswers[7] || ""}
+                                    className={`${feedback[7] || ""} ${lockedAnswers[7] ? "locked" : ""}`}
+                                    disabled={lockedAnswers[7]}
+                                >
+                                    <option value="">--Select--</option>
+                                    {options[7].map((opt, index) => (
+                                        <option key={index} value={opt}>{opt}</option>
+                                    ))}
+                                </select>.
+                            </p>
                         ) : (
                             <p className="bg-green-100 p-3 rounded">
                                 Gamification in Learning is the integration of Game mechanics, such as Points, badges, Leaderboards, and Challenges, like Education to engage learners and enhance their Motivation and Participation.
@@ -207,11 +192,93 @@
                 );
             };
 
+            const DragAndDropTask = () => {
+                const initialMilestones = [
+                    { id: 1, text: "1970s: Introduction of video games" },
+                    { id: 2, text: "1980s: Rise of educational games" },
+                    { id: 3, text: "1990s: Gamification gains popularity" },
+                    { id: 4, text: "2000s: Gamification in corporate training" },
+                ];
+
+                const [milestones, setMilestones] = useState(initialMilestones);
+                const [feedback, setFeedback] = useState("");
+                const [completed, setCompletedTask] = useState(false);
+
+                const correctOrder = [1, 2, 3, 4];
+
+                const handleDrop = (event, targetIndex) => {
+                    const draggedId = parseInt(event.dataTransfer.getData("text/plain"));
+                    const draggedMilestone = milestones.find(m => m.id === draggedId);
+
+                    const updatedMilestones = [...milestones];
+                    updatedMilestones.splice(
+                        updatedMilestones.findIndex(m => m.id === draggedId),
+                        1
+                    );
+                    updatedMilestones.splice(targetIndex, 0, draggedMilestone);
+
+                    setMilestones(updatedMilestones);
+                };
+
+                const handleDragStart = (event, id) => {
+                    event.dataTransfer.setData("text/plain", id);
+                };
+
+                const handleCheckOrder = () => {
+                    const isCorrect = milestones.every(
+                        (milestone, index) => milestone.id === correctOrder[index]
+                    );
+
+                    if (isCorrect) {
+                        setFeedback("Correct! The timeline is now in the right order.");
+                        setCompletedTask(true);
+                        setScore(prev => prev + 100);
+                    } else {
+                        setFeedback("The order is incorrect. Try again!");
+                    }
+                };
+
+                return (
+                    <div className="p-4 bg-yellow-50 rounded mb-6">
+                        <h3 className="font-bold mb-2">Historical Timeline Challenge</h3>
+                        <p className="text-gray-600 mb-2">Drag the milestones into the correct order:</p>
+                        <div>
+                            {milestones.map((milestone, index) => (
+                                <div
+                                    key={milestone.id}
+                                    draggable={!completed}
+                                    onDragStart={(event) => handleDragStart(event, milestone.id)}
+                                    onDragOver={(event) => event.preventDefault()}
+                                    onDrop={(event) => handleDrop(event, index)}
+                                    className="drag-item drop-zone"
+                                >
+                                    {milestone.text}
+                                </div>
+                            ))}
+                        </div>
+                        <button
+                            onClick={handleCheckOrder}
+                            className="mt-4 bg-blue-500 text-white p-2 rounded"
+                            disabled={completed}
+                        >
+                            Check Order
+                        </button>
+                        {feedback && (
+                            <p className={`mt-2 p-2 rounded ${completed ? "bg-green-100" : "bg-red-100"}`}>
+                                {feedback}
+                            </p>
+                        )}
+                    </div>
+                );
+            };
+
             return (
                 <div className="bg-gray-100 p-6 rounded-lg max-w-4xl mx-auto">
                     <h2 className="text-2xl font-bold mb-4">Gamification Learning Quest</h2>
                     <FillInTheBlankTask />
+                    <DragAndDropTask />
                     <p className="italic text-gray-500">(Source: Kapp, K. M. (2012). The Gamification of Learning and Instruction)</p>
+                    <p className="font-bold mt-4">Your Total Score: {score}</p>
                 </div>
             );
         };
