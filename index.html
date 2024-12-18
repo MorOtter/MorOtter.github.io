@@ -1,4 +1,35 @@
-const FillInTheBlankTask = () => {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamification Learning Quest</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .correct { background-color: #d4edda; }
+        .incorrect { background-color: #f8d7da; }
+        .draggable { cursor: move; user-select: none; }
+        .dragging { opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const GamificationLearningQuest = () => {
+            const [score, setScore] = useState(0);
+            const [completed, setCompleted] = useState({
+                fillBlank: false,
+                timeline: false
+            });
+
+            // --- Fill-in-the-Blank Task ---
+            const FillInTheBlankTask = () => {
     const options = {
         1: ["Learning", "Underwater basket weaving", "Gaming", "Adventures"],
         2: ["Game", "Spoon juggling", "Entertainment", "Board"],
@@ -94,3 +125,83 @@ const FillInTheBlankTask = () => {
         </div>
     );
 };
+
+            // --- Historical Timeline Task ---
+            const HistoricalTimelineTask = () => {
+                const [milestones, setMilestones] = useState([
+                    { id: 1, text: "Video game concept of points/levels" },
+                    { id: 2, text: "Term 'Gamification' coined by Nick Pelling" },
+                    { id: 3, text: "First educational gamification studies" },
+                    { id: 4, text: "Widespread adoption in corporate training" }
+                ]);
+
+                // Shuffle the milestones array
+                useEffect(() => {
+                    const shuffledMilestones = [...milestones].sort(() => Math.random() - 0.5);
+                    setMilestones(shuffledMilestones);
+                }, []);
+
+                const [draggedItem, setDraggedItem] = useState(null);
+
+                const handleDragStart = (e, item) => {
+                    setDraggedItem(item);
+                };
+
+                const handleDrop = (e, targetItem) => {
+                    if (!draggedItem) return;
+                    const newMilestones = milestones.map(m =>
+                        m.id === targetItem.id ? draggedItem :
+                        m.id === draggedItem.id ? targetItem : m
+                    );
+                    setMilestones(newMilestones);
+                    setDraggedItem(null);
+                };
+
+                const checkOrder = () => {
+                    const correctOrder = [1, 2, 3, 4];
+                    const isCorrect = milestones.map(m => m.id).every((id, index) => id === correctOrder[index]);
+                    if (isCorrect) {
+                        setScore(prev => prev + 100);
+                        setCompleted(prev => ({ ...prev, timeline: true }));
+                    }
+                };
+
+                return (
+                    <div className="p-4 bg-yellow-50 rounded mb-6">
+                        <h3 className="font-bold mb-2">Historical Timeline Challenge</h3>
+                        <p className="text-gray-600 mb-2">Drag the milestones into the correct order:</p>
+                        <div>
+                            {milestones.map((milestone, index) => (
+                                <div
+                                    key={milestone.id}
+                                    draggable
+                                    onDragStart={(e) => handleDragStart(e, milestone)}
+                                    onDragOver={(e) => e.preventDefault()}
+                                    onDrop={(e) => handleDrop(e, milestone)}
+                                    className="bg-white p-2 mb-2 shadow rounded draggable"
+                                >
+                                    {index + 1}. {milestone.text}
+                                </div>
+                            ))}
+                        </div>
+                        <button onClick={checkOrder} className="mt-4 bg-blue-500 text-white p-2 rounded">
+                            Check Timeline
+                        </button>
+                    </div>
+                );
+            };
+
+            return (
+                <div className="bg-gray-100 p-6 rounded-lg max-w-4xl mx-auto">
+                    <h2 className="text-2xl font-bold mb-4">Gamification Learning Quest</h2>
+                    <FillInTheBlankTask />
+                    <HistoricalTimelineTask />
+                    <p className="italic text-gray-500">(Source: Kapp, K. M. (2012). The Gamification of Learning and Instruction)</p>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<GamificationLearningQuest />, document.getElementById('root'));
+    </script>
+</body>
+</html>
